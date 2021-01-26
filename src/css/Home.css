@@ -1,0 +1,22 @@
+.modalBox {
+    border-radius:15px;
+}
+
+svg {
+    transform:translateY(5px);
+    margin-left: 8px;
+}
+
+a {
+    text-decoration: none;
+    box-sizing: border-box;
+}
+p {
+    overflow: hidden;
+    margin:3px;
+}
+#root {
+    position: relative;
+    box-sizing: border-box;
+    width:100vw;
+}
