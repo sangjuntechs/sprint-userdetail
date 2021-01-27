@@ -9,15 +9,10 @@ const Header = styled.div`
   box-sizing: border-box;
   display: flex;
   width: 100%;
-  height: 100px;
-  background-color: #ff8080;
-  color: white;
-  font-size: 1.5rem;
-  font-weight: 600;
-  justify-content: start;
-  align-items: center;
-  text-align: center;
-  padding-left: 30px;
+  align-items:center;
+  font-size:22px;
+  font-weight:700;
+  padding:30px;
 `;
 
 const Img = styled.img`
@@ -108,8 +103,8 @@ const DcardButton = styled.button`
 const Evaluation = () => {
 
     const [searchInput, setSearchInput] = useState('');
-    const [filterUser, setFilterUser] = useState([]);
     const [searchList, setSearchList] = useState([]);
+    const [filterUser, setFilterUser] = useState(searchList);
     useEffect(() => {
         //프리미엄 유저 id가져오기
     
@@ -143,11 +138,10 @@ const Evaluation = () => {
     <>
       <Header>
       <Link to='/'><Img src={Logo} alt="logo" /></Link>
-        SPRINT 영양사 피드백
+        SPRINT Feedback
       </Header>
       
       <SearchBox>
-        
         <Input
           name="adminId"
           value={searchInput}

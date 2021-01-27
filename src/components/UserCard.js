@@ -73,15 +73,15 @@ const Button = styled.div`
   top: 5px;
   all: unset;
   padding: 0.7rem;
-  border: 2px solid rgba(223, 221, 56);
+  border: 2px solid gray;
   font-weight: 700;
-  color: rgba(223, 221, 56);
   border-radius: 10px;
   cursor: pointer;
+  margin-right:17px;
   transition: 0.2s linear;
   :hover {
     color: white;
-    background-color: rgba(223, 221, 56);
+    background-color: gray;
   }
   @media(max-width:375px) {
     padding:0.3rem;
@@ -129,9 +129,8 @@ const Cp = styled.div`
   position: absolute;
   top: 120px;
   right: 15px;
-  font-weight: 700;
-  color: #ff8080;
-  font-size: 20px;
+  font-weight: 600;
+  font-size: 14px;
   @media (max-width:600px) {
     font-size:8px;
     font-weight:500;
@@ -149,8 +148,8 @@ const EvalButton = styled.button`
   margin-left:0;
   border: 2px solid #41D2A2;
   border-radius: 10px;
-  color: #41D2A2;
-  font-weight: 600;
+  font-weight: 700;
+  color:#41D2A2;
   cursor: pointer;
   transition: 0.2s linear;
   :hover {
@@ -223,11 +222,11 @@ const UserCard = () => {
       ) : (
         <>
           <Cp>현재 페이지: {currentPage}page</Cp>
-          
+          <Button onClick={getPremiumUser}>프리미엄 유저 찾기</Button>
           <Link to='/evaluation'>
           <EvalButton>평가하기</EvalButton>
           </Link>
-          <Button onClick={getPremiumUser}>프리미엄 유저 찾기</Button>
+          
           
          
           <Body>

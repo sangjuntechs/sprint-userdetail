@@ -9,17 +9,12 @@ import Logo from '../img/AppIcon.jpg'
 
 const Header = styled.div`
   display: flex;
+  box-sizing:border-box;
   width: 100%;
-  height: 100px;
-  background-color: #ff8080;
-  color: white;
-  font-size: 1.6rem;
-  font-weight: 500;
-  justify-content: start;
-  align-items: center;
-  text-align: center;
-  box-sizing: border-box;
-  padding-left:30px;
+  align-items:center;
+  padding:30px;
+  font-size:22px;
+  font-weight:700;
 `;
 
 const SearchButton = styled.button`
@@ -28,14 +23,13 @@ const SearchButton = styled.button`
   all: unset;
   padding: 0.7rem;
   margin: 1rem;
-  border: 2px solid #ff8080;
+  border: 2px solid gray;
   border-radius: 10px;
-  color: #ff8080;
   font-weight: 600;
   cursor: pointer;
   transition: 0.2s linear;
   :hover {
-    background-color: #ff8080;
+    background-color: gray;
     color: white;
   }
   @media(max-width:375px) {
@@ -93,7 +87,7 @@ const Home = () => {
   return (
     <>
       <Header>
-        <Img src={Logo}/>SPRINT User Admin 
+        <Img src={Logo}/>SPRINT Manager
       </Header>
       
 

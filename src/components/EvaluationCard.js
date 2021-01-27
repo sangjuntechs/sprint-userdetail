@@ -8,8 +8,8 @@ const Header = styled.div`
   display: flex;
   width: 100%;
   box-sizing: border-box;
-  padding: 20px;
-  font-size: 23px;
+  padding: 30px;
+  font-size: 22px;
   align-items: center;
   font-weight: 700;
 `;
@@ -23,28 +23,26 @@ const Img = styled.img`
 
 const Card = styled.div`
   display: flex;
-  flex-direction: column;
   padding: 15px;
   box-shadow: 4px 8px 12px gray;
   border-radius: 15px;
   margin: 15px;
   width: 30%;
-  max-width: 350px;
-  justify-content: center;
+  justify-content:space-around;
   align-items: center;
-  z-index:10;
-  min-width:270px;
-  max-width:350px;
-  background-color:white;
+  z-index: 10;
+  min-width:500px;
+  max-width: 500px;
+  background-color: white;
 `;
 
 const CardContainer = styled.div`
-  display:flex;
-  flex-direction:column;
-  align-items:center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
   margin-top: 30px;
-  height:450px;
-  overflow:scroll;
+  height: 450px;
+  overflow: scroll;
 `;
 
 const CardImg = styled.img`
@@ -94,7 +92,7 @@ const InputSet = styled.div`
   align-items: flex-start;
   text-align: center;
   flex-direction: column;
-  background-color: rgba(240,240,240,0.8);
+  background-color: rgba(240, 240, 240, 0.8);
   padding: 15px;
   border-radius: 10px;
   @media (max-width: 375px) {
@@ -119,19 +117,19 @@ const BeforeEval = styled.div`
   min-width: 350px;
   padding: 30px;
   height: 680px;
-  background-color:rgba(240,240,240,0.8);
-  border-radius:10px;
+  background-color: rgba(240, 240, 240, 0.8);
+  border-radius: 10px;
   cursor: all-scroll;
 `;
 const BeforeEvalCard = styled.div`
   box-sizing: border-box;
   width: 100%;
   border-radius: 15px;
-  box-shadow:2px 4px 8px gray;
+  box-shadow: 2px 4px 8px gray;
   padding: 15px;
   margin: 15px;
-  max-width:600px;
-  background-color:white;
+  max-width: 600px;
+  background-color: white;
 `;
 
 const SubmitButton = styled.button`
@@ -154,14 +152,13 @@ const SubmitButton = styled.button`
 
 const FoodDetail = styled.div`
   display: flex;
-  margin-bottom: 5px;
+  margin-bottom: 10px;
   flex-direction: column;
   justify-content: center;
-  align-items: center;
 `;
 
 const UserInfoContainer = styled.div`
-  background-color: rgba(240,240,240,0.8);
+  background-color: rgba(240, 240, 240, 0.8);
   margin-bottom: 15px;
   padding: 15px;
   border-radius: 10px;
@@ -173,11 +170,11 @@ const Grid1 = styled.div`
 `;
 
 const AllNutrition = styled.div`
-  padding:15px;
-  background-color: rgba(240,240,240,0.8);
-  border-radius:10px;
-  margin-left:10px;
-  margin-right:10px;
+  padding: 15px;
+  background-color: rgba(240, 240, 240, 0.8);
+  border-radius: 10px;
+  margin-left: 10px;
+  margin-right: 10px;
 `;
 
 const EvaluationCard = ({ match }) => {
@@ -347,7 +344,11 @@ const EvaluationCard = ({ match }) => {
       <EvaluationContainer>
         <Grid1>
           <UserInfoContainer>
-            <p style={{ fontSize: "20px", color: "gray" }}>유저 정보</p>
+            <p
+              style={{ fontSize: "20px", color: "gray", marginBottom: "15px" }}
+            >
+              유저 정보
+            </p>
 
             <p
               style={{
@@ -432,7 +433,7 @@ const EvaluationCard = ({ match }) => {
               style={{ marginBottom: "10px", padding: "5px" }}
               type="text"
               name="evalGrade"
-              placeholder="0~5"
+              placeholder="0.0~5.0"
               value={evalGrade}
               onChange={onChange}
             />
@@ -457,6 +458,7 @@ const EvaluationCard = ({ match }) => {
               color: "gray",
               fontSize: "22px",
               fontWeight: "600",
+              marginBottom: "15px",
             }}
           >
             전체 영양정보
@@ -485,78 +487,94 @@ const EvaluationCard = ({ match }) => {
             )}mg 나트륨: ${Math.floor(sumSodium)}mg`}
           </p>
           <CardContainer>
-        {filterCards.map((cards) => {
-          return (
-            <Card key={cards.userId + cards.cardKey}>
-              <p style={{ fontSize: "13px" }}>
-                <b>카드 번호:</b> {cards.cardKey}
-              </p>
-              <p style={{ color: "green", fontSize: "13px" }}>
-                <b>먹은 시간:</b> {cards.cardShowDt}
-              </p>
-              <p style={{ fontSize: "13px" }}>
-                <b>생성 시간:</b> {cards.cardCreateDt}
-              </p>
-              <p style={{ fontSize: "13px" }}>
-                <b>카드 타입:</b> {cards.cardType}
-              </p>
+            
+            {filterCards.map((cards) => {
+              return (
+                
+                <Card key={cards.userId + cards.cardKey}>
+                  <div>
+                  <p style={{ fontSize: "13px" }}>
+                    <b>카드 번호:</b> {cards.cardKey}
+                  </p>
+                  <p style={{ color: "green", fontSize: "13px" }}>
+                    <b>먹은 시간:</b> {cards.cardShowDt}
+                  </p>
+                  <p style={{ fontSize: "13px" }}>
+                    <b>생성 시간:</b> {cards.cardCreateDt}
+                  </p>
+                  <p style={{ fontSize: "13px" }}>
+                    <b>카드 타입:</b> {cards.cardType}
+                  </p>
 
-              <h3>{cards.cardMemo}</h3>
-              <CardImg src={cards.cardImage ? cards.cardImage : Logo} />
+                  <p
+                    style={{
+                      fontSize: "18px",
+                      marginTop:'10px',
+                      marginBottom:'10px',
+                      fontWeight: "700",
+                    }}
+                  >
+                    {cards.cardMemo}
+                  </p>
 
-              {/* a_card_food내용 card에 가져오기 */}
-              {aCardFood
-                .filter((foods) => {
-                  return foods.cardKey === cards.cardKey;
-                })
-                .map((food) => {
-                  return (
-                    <FoodDetail key={food.cfKey}>
-                      <p style={{ color: "rgba(80,80,80)" }}>
-                        {" "}
-                        <b>{`${food.cfFoodName}, ${food.cfCalorie}kcal, ${food.cfGram}g `}</b>
-                      </p>
-                      <p style={{ fontSize: "12px" }}>
-                        {/* 메뉴 별 g당 탄단지 */}
-                        {food.cfGram}g
-                        {` 탄:${(
-                          (food.food100gGCarbohydrate / 100) *
-                          food.cfGram
-                        ).toFixed(1)} 단:${(
-                          (food.food100gGProtein / 100) *
-                          food.cfGram
-                        ).toFixed(1)} 지:${(
-                          (food.food100gGFat / 100) *
-                          food.cfGram
-                        ).toFixed(1)}`}
-                      </p>
-                    </FoodDetail>
-                  );
-                })}
-            </Card>
-          );
-        })}
-      </CardContainer>
+                  {/* a_card_food내용 card에 가져오기 */}
+                  {aCardFood
+                    .filter((foods) => {
+                      return foods.cardKey === cards.cardKey;
+                    })
+                    .map((food) => {
+                      return (
+                        <FoodDetail key={food.cfKey}>
+                          <p style={{ color: "rgba(80,80,80)" }}>
+                            {" "}
+                            <b>{`${food.cfFoodName}, ${food.cfCalorie}kcal, ${food.cfGram}g `}</b>
+                          </p>
+                          <p style={{ fontSize: "12px" }}>
+                            {/* 메뉴 별 g당 탄단지 */}
+                            {food.cfGram}g
+                            {` 탄:${(
+                              (food.food100gGCarbohydrate / 100) *
+                              food.cfGram
+                            ).toFixed(1)} 단:${(
+                              (food.food100gGProtein / 100) *
+                              food.cfGram
+                            ).toFixed(1)} 지:${(
+                              (food.food100gGFat / 100) *
+                              food.cfGram
+                            ).toFixed(1)}`}
+                          </p>
+                        </FoodDetail>
+                      );
+                    })}
+                    </div>
+                  <CardImg src={cards.cardImage ? cards.cardImage : Logo} />
+                </Card>
+              );
+            })}
+          </CardContainer>
         </AllNutrition>
         <BeforeEval>
           <b>과거 히스토리</b>
           {managerEval.map((beval) => {
             return (
               <BeforeEvalCard key={beval.meKey}>
-                <p style={{ color: "#94CB94", fontSize: "16px", fontWeight:'700' }}>
-                  {String(beval.meShowDt).slice(0,10)}
+                <p
+                  style={{
+                    color: "#94CB94",
+                    fontSize: "16px",
+                    fontWeight: "700",
+                  }}
+                >
+                  {String(beval.meShowDt).slice(0, 10)}
                 </p>
-                
+
                 <p style={{ color: "gray", fontSize: "12px" }}>
                   작성자: {beval.managerId} 작성일:{beval.meCreateDt}
                 </p>
                 <p style={{ color: "gray", fontSize: "14px" }}>
                   Score : {beval.meScore}
                 </p>
-                <p style={{ marginTop:'20px'}}>{beval.meMemo}</p>
-                
-                
-               
+                <p style={{ marginTop: "20px" }}>{beval.meMemo}</p>
               </BeforeEvalCard>
             );
           })}
