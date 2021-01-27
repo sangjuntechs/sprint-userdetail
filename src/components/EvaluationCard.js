@@ -41,7 +41,7 @@ const CardContainer = styled.div`
   flex-direction: column;
   align-items: center;
   margin-top: 30px;
-  height: 450px;
+  height: 500px;
   overflow: scroll;
 `;
 
@@ -87,6 +87,7 @@ const InputContainer = styled.div`
 `;
 
 const InputSet = styled.div`
+  box-sizing:border-box;
   display: flex;
   justify-content: center;
   align-items: flex-start;
@@ -116,7 +117,7 @@ const BeforeEval = styled.div`
   flex-direction: column;
   min-width: 350px;
   padding: 30px;
-  height: 680px;
+  height: 690px;
   background-color: rgba(240, 240, 240, 0.8);
   border-radius: 10px;
   cursor: all-scroll;

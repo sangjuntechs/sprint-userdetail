@@ -140,11 +140,9 @@ const Cp = styled.div`
 `;
 
 const EvalButton = styled.button`
-  position:sticky;
-  top:0;
   all: unset;
   padding: 0.7rem;
-  margin: 1rem;
+  margin: 1.2rem;
   margin-left:0;
   border: 2px solid #41D2A2;
   border-radius: 10px;
