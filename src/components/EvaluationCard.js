@@ -94,7 +94,7 @@ const InputSet = styled.div`
   align-items: flex-start;
   text-align: center;
   flex-direction: column;
-  background-color: #eaeff8;
+  background-color: rgba(240,240,240,0.8);
   padding: 15px;
   border-radius: 10px;
   @media (max-width: 375px) {
@@ -119,7 +119,7 @@ const BeforeEval = styled.div`
   min-width: 350px;
   padding: 30px;
   height: 680px;
-  background-color:#eaeff8;
+  background-color:rgba(240,240,240,0.8);
   border-radius:10px;
   cursor: all-scroll;
 `;
@@ -161,7 +161,7 @@ const FoodDetail = styled.div`
 `;
 
 const UserInfoContainer = styled.div`
-  background-color: #eaeff8;
+  background-color: rgba(240,240,240,0.8);
   margin-bottom: 15px;
   padding: 15px;
   border-radius: 10px;
@@ -174,7 +174,7 @@ const Grid1 = styled.div`
 
 const AllNutrition = styled.div`
   padding:15px;
-  background-color: #eaeff8;
+  background-color: rgba(240,240,240,0.8);
   border-radius:10px;
   margin-left:10px;
   margin-right:10px;
@@ -544,7 +544,7 @@ const EvaluationCard = ({ match }) => {
             return (
               <BeforeEvalCard key={beval.meKey}>
                 <p style={{ color: "#94CB94", fontSize: "16px", fontWeight:'700' }}>
-                  {beval.meShowDt}
+                  {String(beval.meShowDt).slice(0,10)}
                 </p>
                 
                 <p style={{ color: "gray", fontSize: "12px" }}>
@@ -562,7 +562,6 @@ const EvaluationCard = ({ match }) => {
           })}
         </BeforeEval>
       </EvaluationContainer>
-      
     </>
   );
 };
