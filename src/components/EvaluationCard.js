@@ -178,6 +178,21 @@ const AllNutrition = styled.div`
   margin-right: 10px;
 `;
 
+const CardMemo = styled.div`
+  display: flex;
+  padding: 15px;
+  box-shadow: 4px 8px 12px gray;
+  border-radius: 15px;
+  margin: 15px;
+  width: 30%;
+  justify-content:space-around;
+  align-items: center;
+  z-index: 10;
+  min-width:500px;
+  max-width: 500px;
+  background-color: #EFE5E1;
+`
+
 const EvaluationCard = ({ match }) => {
   const [userCards, setUserCards] = useState([]);
   const [searchInput, setSearchInput] = useState("");
@@ -491,7 +506,7 @@ const EvaluationCard = ({ match }) => {
             
             {filterCards.map((cards) => {
               return (
-                
+                cards.cardType === 'food' ?
                 <Card key={cards.userId + cards.cardKey}>
                   <div>
                   <p style={{ fontSize: "13px" }}>
@@ -550,7 +565,64 @@ const EvaluationCard = ({ match }) => {
                     </div>
                   <CardImg src={cards.cardImage ? cards.cardImage : Logo} />
                 </Card>
-              );
+               : <CardMemo key={cards.userId + cards.cardKey}>
+               <div>
+               <p style={{ fontSize: "13px" }}>
+                 <b>카드 번호:</b> {cards.cardKey}
+               </p>
+               <p style={{ color: "green", fontSize: "13px" }}>
+                 <b>먹은 시간:</b> {cards.cardShowDt}
+               </p>
+               <p style={{ fontSize: "13px" }}>
+                 <b>생성 시간:</b> {cards.cardCreateDt}
+               </p>
+               <p style={{ fontSize: "13px" }}>
+                 <b>카드 타입:</b> {cards.cardType}
+               </p>
+
+               <p
+                 style={{
+                   fontSize: "18px",
+                   marginTop:'10px',
+                   marginBottom:'10px',
+                   fontWeight: "700",
+                 }}
+               >
+                 {cards.cardMemo}
+               </p>
+
+               {/* a_card_food내용 card에 가져오기 */}
+               {aCardFood
+                 .filter((foods) => {
+                   return foods.cardKey === cards.cardKey;
+                 })
+                 .map((food) => {
+                   return (
+                     <FoodDetail key={food.cfKey}>
+                       <p style={{ color: "rgba(80,80,80)" }}>
+                         {" "}
+                         <b>{`${food.cfFoodName}, ${food.cfCalorie}kcal, ${food.cfGram}g `}</b>
+                       </p>
+                       <p style={{ fontSize: "12px" }}>
+                         {/* 메뉴 별 g당 탄단지 */}
+                         {food.cfGram}g
+                         {` 탄:${(
+                           (food.food100gGCarbohydrate / 100) *
+                           food.cfGram
+                         ).toFixed(1)} 단:${(
+                           (food.food100gGProtein / 100) *
+                           food.cfGram
+                         ).toFixed(1)} 지:${(
+                           (food.food100gGFat / 100) *
+                           food.cfGram
+                         ).toFixed(1)}`}
+                       </p>
+                     </FoodDetail>
+                   );
+                 })}
+                 </div>
+               <CardImg src={cards.cardImage ? cards.cardImage : Logo} />
+             </CardMemo>);
             })}
           </CardContainer>
         </AllNutrition>
