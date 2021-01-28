@@ -5,6 +5,7 @@ import { Link } from "react-router-dom";
 import Axios from "axios";
 
 const Header = styled.div`
+  box-sizing:border-box;
   display: flex;
   width: 100%;
   box-sizing: border-box;
@@ -23,6 +24,7 @@ const Img = styled.img`
 
 const Card = styled.div`
   display: flex;
+  box-sizing:border-box;
   padding: 15px;
   box-shadow: 4px 8px 12px gray;
   border-radius: 15px;
@@ -31,18 +33,20 @@ const Card = styled.div`
   justify-content:space-around;
   align-items: center;
   z-index: 10;
-  min-width:500px;
+  width:100%;
   max-width: 500px;
   background-color: white;
 `;
 
 const CardContainer = styled.div`
+  box-sizing:border-box;
   display: flex;
   flex-direction: column;
   align-items: center;
   margin-top: 30px;
   height: 500px;
   overflow: scroll;
+  width:100%;
   cursor: all-scroll;
 `;
 
@@ -99,6 +103,7 @@ const InputSet = styled.div`
   background-color: rgba(240, 240, 240, 0.8);
   padding: 15px;
   border-radius: 10px;
+  height:100%;
   @media (max-width: 375px) {
     width: 320px;
   }
@@ -111,6 +116,9 @@ const EvaluationContainer = styled.div`
   font-weight: 600;
   justify-content: space-around;
   border-bottom: 2px solid rgba(200, 200, 200);
+  @media (max-width:500px) {
+    flex-flow:wrap;
+  }
 `;
 const BeforeEval = styled.div`
   box-sizing: border-box;
@@ -120,10 +128,11 @@ const BeforeEval = styled.div`
   flex-direction: column;
   min-width: 350px;
   padding: 30px;
-  height: 690px;
+  height: 700px;
   background-color: rgba(240, 240, 240, 0.8);
   border-radius: 10px;
   cursor: all-scroll;
+  width:100%;
 `;
 const BeforeEvalCard = styled.div`
   box-sizing: border-box;
@@ -132,7 +141,7 @@ const BeforeEvalCard = styled.div`
   box-shadow: 2px 4px 8px gray;
   padding: 15px;
   margin: 15px;
-  max-width: 600px;
+  max-width: 800px;
   background-color: white;
 `;
 
@@ -168,6 +177,7 @@ const FoodDetail = styled.div`
 `;
 
 const UserInfoContainer = styled.div`
+  box-sizing:border-box;
   background-color: rgba(240, 240, 240, 0.8);
   margin-bottom: 15px;
   padding: 15px;
@@ -177,6 +187,7 @@ const UserInfoContainer = styled.div`
 const Grid1 = styled.div`
   display: flex;
   flex-direction: column;
+  width:100%;
 `;
 
 const AllNutrition = styled.div`
@@ -185,9 +196,11 @@ const AllNutrition = styled.div`
   border-radius: 10px;
   margin-left: 10px;
   margin-right: 10px;
+  width:110%;
 `;
 
 const CardMemo = styled.div`
+  box-sizing:border-box;
   display: flex;
   padding: 15px;
   box-shadow: 4px 8px 12px gray;
@@ -197,7 +210,7 @@ const CardMemo = styled.div`
   justify-content:space-around;
   align-items: center;
   z-index: 10;
-  min-width:500px;
+  width:100%;
   max-width: 500px;
   background-color: #E9F3F9;
 `
@@ -544,7 +557,7 @@ const EvaluationCard = ({ match }) => {
                     {cards.cardMemo}
                   </p>
 
-                  <p style={{margin:'0', fontSize:'12px', color:'gray', marginTop:'5px'}}>
+                  <p style={{margin:'0', fontSize:'12px', color:'gray'}}>
                    총 섭취량 {aCardFood.filter((foods) => {
                     return foods.cardKey === cards.cardKey
                   }).reduce((acc, curr) => {
@@ -593,10 +606,10 @@ const EvaluationCard = ({ match }) => {
 
                <p
                  style={{
-                   fontSize: "18px",
+                   fontSize: "16px",
                    marginTop:'10px',
                    marginBottom:'10px',
-                   fontWeight: "700",
+                   fontWeight:'500'
                  }}
                >
                  {cards.cardMemo}
@@ -663,7 +676,7 @@ const EvaluationCard = ({ match }) => {
                 <p style={{ color: "black", fontSize: "14px", fontWeight:'700',margin:'0', marginTop:'5px'  }}>
                   Score : {beval.meScore}
                 </p>
-                <p style={{ marginTop: "15px", fontWeight:'400', fontSize:'15px'}}>{beval.meMemo}</p>
+                <p style={{  fontWeight:'400', fontSize:'14px', margin:'0',marginTop: "15px"}}>{beval.meMemo}</p>
               </BeforeEvalCard>
             );
           })}
