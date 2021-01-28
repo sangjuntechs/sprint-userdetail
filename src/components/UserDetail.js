@@ -41,7 +41,7 @@ const UserDetail = ({ match }) => {
           <h3>{getUser.userName}</h3>
           <p>유저 아이디 : {getUser.userId}</p>
           <p>이메일 : {getUser.userEmail}</p>
-          <p>생일 : {getUser.user_birthday}</p>
+          <p>생일 : {getUser.userBirthday}</p>
           <p>유저삭제상태 : {getUser.userDeleteYn}</p>
 
           <Link to="/">Home</Link>

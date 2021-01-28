@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import styled from "styled-components";
-import Logo from "../img/AppIcon.jpg";
+import Logo from "../img/AppIconNoopac.png";
 import { Link } from "react-router-dom";
 import Axios from "axios";
 
@@ -15,9 +15,9 @@ const Header = styled.div`
 `;
 
 const Img = styled.img`
-  width: 60px;
-  height: 60px;
-  margin-right: 10px;
+  width: 50px;
+  height: 50px;
+  margin-right: 15px;
   border-radius: 50%;
 `;
 
@@ -50,6 +50,7 @@ const CardImg = styled.img`
   height: 200px;
   margin-bottom: 15px;
   border-radius: 5px;
+  z-index:10;
 `;
 
 const Input = styled.input`
@@ -153,7 +154,7 @@ const SubmitButton = styled.button`
 
 const FoodDetail = styled.div`
   display: flex;
-  margin-bottom: 10px;
+  margin-bottom: 15px;
   flex-direction: column;
   justify-content: center;
 `;
@@ -190,7 +191,7 @@ const CardMemo = styled.div`
   z-index: 10;
   min-width:500px;
   max-width: 500px;
-  background-color: #EFE5E1;
+  background-color: #E9F3F9;
 `
 
 const EvaluationCard = ({ match }) => {
@@ -206,6 +207,7 @@ const EvaluationCard = ({ match }) => {
   const [date, setDate] = useState("");
   const [userId, setUserId] = useState(match.params.id);
   const [writer, setWriter] = useState("");
+
 
   useEffect(() => {
     Axios.get(`http://54.180.61.201:8080/user-card/${match.params.id}`).then(
@@ -337,6 +339,12 @@ const EvaluationCard = ({ match }) => {
 
   const evalDays = `${evalMonth}월 ${evalDate}일`;
 
+  const onKeyPress = (e) => {
+    if(e.key === 'Enter') {
+      filterCardFn();
+    }
+  }
+
   return (
     <>
       <Header>
@@ -352,6 +360,7 @@ const EvaluationCard = ({ match }) => {
           onChange={onChange}
           type="date"
           id="date"
+          onKeyPress={onKeyPress}
         />
 
         <Button onClick={filterCardFn}>찾기</Button>
@@ -363,7 +372,7 @@ const EvaluationCard = ({ match }) => {
             <p
               style={{ fontSize: "20px", color: "gray", marginBottom: "15px" }}
             >
-              유저 정보
+              👤 유저 정보
             </p>
 
             <p
@@ -375,11 +384,11 @@ const EvaluationCard = ({ match }) => {
               {/* 성별 별 표준몸무게,칼로리 및 기초대사량 구하기 */}
               {userInfo
                 ? userInfo.userGender === 1
-                  ? `표준 몸무게: ${(
+                  ?`표준 몸무게: ${(
                       (parseInt(String(userInfo.userHeight).slice(-4, 3)) ** 2 /
                         10000) *
                       22
-                    ).toFixed(1)}kg 표준 칼로리: ${
+                    ).toFixed(1)}kg 표준 칼로리:${
                       (
                         (parseInt(String(userInfo.userHeight).slice(-4, 3)) **
                           2 /
@@ -387,6 +396,7 @@ const EvaluationCard = ({ match }) => {
                         22
                       ).toFixed(1) * 30
                     }kcal
+                    
                 기초대사량: ${
                   parseInt(String(userInfo.userWeight).slice(-3, 2)) * 24 * 1
                 }kcal`
@@ -409,9 +419,9 @@ const EvaluationCard = ({ match }) => {
             </p>
             <p style={{ marginBottom: "20px", fontSize: "14px" }}>
               {userInfo
-                ? `이름: ${userInfo.userName} 몸무게: ${String(
+                ? `${userInfo.userName} ${String(
                     userInfo.userWeight
-                  ).slice(-3, 2)}kg 키: ${String(userInfo.userHeight).slice(
+                  ).slice(-3, 2)}kg ${String(userInfo.userHeight).slice(
                     -4,
                     3
                   )}cm`
@@ -477,7 +487,7 @@ const EvaluationCard = ({ match }) => {
               marginBottom: "15px",
             }}
           >
-            전체 영양정보
+           🧐 전체 영양정보
           </p>
           {/*전체 영양정보 표시*/}
           <p
@@ -486,11 +496,11 @@ const EvaluationCard = ({ match }) => {
             1
           )}kcal 탄수화물: ${sumFoodsCarbo.toFixed(1)}g(${
             sumFoodsCarbo.toFixed(1) * 4
-          }kcal) 단백질: ${sumFoodsProt.toFixed(1)}g(${
+          }) 단백질: ${sumFoodsProt.toFixed(1)}g(${
             sumFoodsProt.toFixed(1) * 4
-          }kcal) 지방: ${sumFoodsFat.toFixed(1)}g(${(
+          }) 지방: ${sumFoodsFat.toFixed(1)}g(${(
             sumFoodsFat.toFixed(1) * 9
-          ).toFixed(1)}kcal)`}</p>
+          ).toFixed(1)})`}</p>
           <p
             style={{
               fontSize: "14px",
@@ -518,9 +528,6 @@ const EvaluationCard = ({ match }) => {
                   <p style={{ fontSize: "13px" }}>
                     <b>생성 시간:</b> {cards.cardCreateDt}
                   </p>
-                  <p style={{ fontSize: "13px" }}>
-                    <b>카드 타입:</b> {cards.cardType}
-                  </p>
 
                   <p
                     style={{
@@ -541,23 +548,23 @@ const EvaluationCard = ({ match }) => {
                     .map((food) => {
                       return (
                         <FoodDetail key={food.cfKey}>
-                          <p style={{ color: "rgba(80,80,80)" }}>
+                          <p style={{ color: "rgba(80,80,80)", margin:'0' }}>
                             {" "}
                             <b>{`${food.cfFoodName}, ${food.cfCalorie}kcal, ${food.cfGram}g `}</b>
                           </p>
-                          <p style={{ fontSize: "12px" }}>
+                          <p style={{ fontSize: "12px", margin:'0' }}>
                             {/* 메뉴 별 g당 탄단지 */}
                             {food.cfGram}g
-                            {` 탄:${(
+                            {` (${(
                               (food.food100gGCarbohydrate / 100) *
                               food.cfGram
-                            ).toFixed(1)} 단:${(
+                            ).toFixed(1)}/ ${(
                               (food.food100gGProtein / 100) *
                               food.cfGram
-                            ).toFixed(1)} 지:${(
+                            ).toFixed(1)}/ ${(
                               (food.food100gGFat / 100) *
                               food.cfGram
-                            ).toFixed(1)}`}
+                            ).toFixed(1)})`}
                           </p>
                         </FoodDetail>
                       );
@@ -575,9 +582,6 @@ const EvaluationCard = ({ match }) => {
                </p>
                <p style={{ fontSize: "13px" }}>
                  <b>생성 시간:</b> {cards.cardCreateDt}
-               </p>
-               <p style={{ fontSize: "13px" }}>
-                 <b>카드 타입:</b> {cards.cardType}
                </p>
 
                <p
@@ -627,7 +631,7 @@ const EvaluationCard = ({ match }) => {
           </CardContainer>
         </AllNutrition>
         <BeforeEval>
-          <b>과거 히스토리</b>
+          <b>🍕 과거 히스토리</b>
           {managerEval.map((beval) => {
             return (
               <BeforeEvalCard key={beval.meKey}>
@@ -640,11 +644,14 @@ const EvaluationCard = ({ match }) => {
                 >
                   {String(beval.meShowDt).slice(0, 10)}
                 </p>
-
                 <p style={{ color: "gray", fontSize: "12px" }}>
-                  작성자: {beval.managerId} 작성일:{beval.meCreateDt}
+                  {beval.meCreateDt}
                 </p>
-                <p style={{ color: "gray", fontSize: "14px" }}>
+                <p style={{ color: "gray", fontSize: "12px" }}>
+                  {beval.managerId}
+                </p>
+                
+                <p style={{ color: "black", fontSize: "14px", fontWeight:'700' }}>
                   Score : {beval.meScore}
                 </p>
                 <p style={{ marginTop: "20px" }}>{beval.meMemo}</p>

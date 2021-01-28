@@ -4,7 +4,7 @@ import styled from "styled-components";
 import { IoSearch } from "react-icons/io5";
 import Modal from 'react-modal'
 import Search from "../components/Search";
-import Logo from '../img/AppIcon.jpg'
+import Logo from '../img/AppIconNoopac.png'
 
 
 const Header = styled.div`
@@ -68,9 +68,9 @@ const ModalHeader = styled.div`
 `
 
 const Img = styled.img`
-  width:60px;
-  height:60px;
-  margin-right:10px;
+  width:50px;
+  height:50px;
+  margin-right:15px;
   border-radius:50%;
 `
 

@@ -2,7 +2,7 @@
 import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import Axios from 'axios';
-import Logo from "../img/AppIcon.jpg";
+import Logo from "../img/AppIconNoopac.png";
 import { Link } from "react-router-dom";
 
 const Header = styled.div`
@@ -16,9 +16,9 @@ const Header = styled.div`
 `;
 
 const Img = styled.img`
-  width:60px;
-  height:60px;
-  margin-right:10px;
+  width:50px;
+  height:50px;
+  margin-right:15px;
   border-radius:50%;
 `
 
@@ -105,6 +105,7 @@ const Evaluation = () => {
     const [searchInput, setSearchInput] = useState('');
     const [searchList, setSearchList] = useState([]);
     const [filterUser, setFilterUser] = useState(searchList);
+
     useEffect(() => {
         //프리미엄 유저 id가져오기
     
@@ -134,6 +135,12 @@ const Evaluation = () => {
         setFilterUser(filterUsers.reverse());
       };
 
+      const onKeyPress = (e) => {
+        if(e.key === 'Enter') {
+          filterUserFn();
+        }
+      }
+
   return (
     <>
       <Header>
@@ -147,12 +154,13 @@ const Evaluation = () => {
           value={searchInput}
           onChange={onChange}
           placeholder="Push your admin ID"
+          onKeyPress={onKeyPress}
         />
         <Button onClick={filterUserFn}>검색</Button>
       </SearchBox>
       {filterUser.map((user) => {
           return (
-              <CardBox key={user.puKey}>
+              <CardBox key={user.userId}>
               <Card>
                 <h2>{user.userName}</h2>
                 <p><b>유저 아이디:</b> {user.userId}</p>
