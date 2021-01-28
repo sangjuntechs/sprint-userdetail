@@ -23,7 +23,7 @@ const UserDetail = ({ match }) => {
 
   useEffect(() => {
     // 유저 정보 가져오기
-    Axios.get("http://54.180.61.201:8080/").then((response) => {
+    Axios.get("http://54.180.61.201:8080/space_for_nutrition_managers-0.0.1-SNAPSHOT/").then((response) => {
       setUsers(response.data);
     });
   }, []);

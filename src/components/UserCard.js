@@ -173,12 +173,12 @@ const UserCard = () => {
     //프리미엄 유저 id가져오기
 
     //유저 리스트 가져오기
-    Axios.get("http://54.180.61.201:8080").then((response) => {
+    Axios.get("http://54.180.61.201:8080/space_for_nutrition_managers-0.0.1-SNAPSHOT/").then((response) => {
       setUserList(response.data.reverse());
       console.log(response.data)
       setIsLoading(false);
     });
-    Axios.get("http://54.180.61.201:8080/premium-user").then((response) => {
+    Axios.get("http://54.180.61.201:8080/space_for_nutrition_managers-0.0.1-SNAPSHOT/premium-user").then((response) => {
       setPremiumUser(response.data);
     });
 

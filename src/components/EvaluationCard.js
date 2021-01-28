@@ -50,7 +50,7 @@ const CardImg = styled.img`
   width: 200px;
   height: 200px;
   margin-bottom: 15px;
-  border-radius: 5px;
+  border-radius: 8px;
   z-index:10;
 `;
 
@@ -164,6 +164,7 @@ const FoodDetail = styled.div`
   border-radius:5px;
   padding:10px;
   min-width:210px;
+  max-width:270px;
 `;
 
 const UserInfoContainer = styled.div`
@@ -217,19 +218,19 @@ const EvaluationCard = ({ match }) => {
 
 
   useEffect(() => {
-    Axios.get(`http://54.180.61.201:8080/user-card/${match.params.id}`).then(
+    Axios.get(`http://54.180.61.201:8080/space_for_nutrition_managers-0.0.1-SNAPSHOT/user-card/${match.params.id}`).then(
       (response) => {
         setUserCards(response.data);
         console.log(response.data);
       }
     );
-    Axios.get(`http://54.180.61.201:8080/${match.params.id}`).then(
+    Axios.get(`http://54.180.61.201:8080/space_for_nutrition_managers-0.0.1-SNAPSHOT/${match.params.id}`).then(
       (response) => {
         setUserInfo(response.data);
         console.log(response.data);
       }
     );
-    Axios.get(`http://54.180.61.201:8080/card-food/${match.params.id}`).then(
+    Axios.get(`http://54.180.61.201:8080/space_for_nutrition_managers-0.0.1-SNAPSHOT/card-food/${match.params.id}`).then(
       (response) => {
         setAcardFood(response.data);
         console.log(response.data);
@@ -339,6 +340,8 @@ const EvaluationCard = ({ match }) => {
     return acc + (curr.food100gCalorie / 100) * curr.cfGram;
   }, 0);
 
+
+  
   let evalDay = new Date();
 
   let evalMonth = evalDay.getMonth() + 1;
@@ -527,15 +530,15 @@ const EvaluationCard = ({ match }) => {
                 <Card key={cards.userId + cards.cardKey}>
                   <div>
               
-                  <p style={{ color: "#94CB94", fontSize: "15px" ,margin:'0', marginBottom:'5px'}}>
+                  <p style={{ color: "#94CB94", fontSize: "15px" ,margin:'0', marginBottom:'5px', fontWeight:'700'}}>
                     {cards.cardShowDt}에 식사 👏🏻
                   </p>
 
                   <p
                     style={{
-                      fontSize: "18px",
+                      fontSize: "17px",
                       margin:'0',
-                      fontWeight: "700",
+                      fontWeight:'500'
                     }}
                   >
                     {cards.cardMemo}
@@ -550,8 +553,8 @@ const EvaluationCard = ({ match }) => {
                       return (
                         <FoodDetail key={food.cfKey}>
                           <p style={{margin:'0', fontSize:'14px' }}>
-                            {" "}
                             {`${food.cfFoodName}, ${food.cfCalorie}kcal, ${food.cfGram}g `}
+                            
                           </p>
                           <p style={{ fontSize: "12px", margin:'0' }}>
                             {/* 메뉴 별 g당 탄단지 */}
@@ -571,6 +574,11 @@ const EvaluationCard = ({ match }) => {
                     })}
                     </div>
                   <CardImg src={cards.cardImage ? cards.cardImage : Logo} />
+                  {aCardFood.filter((foods) => {
+                    return foods.cardKey === cards.cardKey
+                  }).reduce((acc, curr) => {
+                    return acc + curr.cfGram
+                  },0)}
                 </Card>
                : <CardMemo key={cards.userId + cards.cardKey}>
                <div>
@@ -635,21 +643,23 @@ const EvaluationCard = ({ match }) => {
                     color: "#94CB94",
                     fontSize: "16px",
                     fontWeight: "700",
+                    margin:'0',
+                    marginBottom:'15px'
                   }}
                 >
-                  {String(beval.meShowDt).slice(0, 10)}
+                  {String(beval.meShowDt).slice(0, 10)} 피드백
                 </p>
-                <p style={{ color: "gray", fontSize: "12px" }}>
+                <p style={{ color: "gray", fontSize: "12px", margin:'0' }}>
                   {beval.meCreateDt}
                 </p>
-                <p style={{ color: "gray", fontSize: "12px" }}>
+                <p style={{ color: "gray", fontSize: "12px",margin:'0'  }}>
                   {beval.managerId}
                 </p>
                 
-                <p style={{ color: "black", fontSize: "14px", fontWeight:'700' }}>
+                <p style={{ color: "black", fontSize: "14px", fontWeight:'700',margin:'0', marginTop:'5px'  }}>
                   Score : {beval.meScore}
                 </p>
-                <p style={{ marginTop: "20px", fontWeight:'400', fontSize:'15px'}}>{beval.meMemo}</p>
+                <p style={{ marginTop: "15px", fontWeight:'400', fontSize:'15px'}}>{beval.meMemo}</p>
               </BeforeEvalCard>
             );
           })}
