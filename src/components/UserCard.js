@@ -173,7 +173,7 @@ const UserCard = () => {
     //프리미엄 유저 id가져오기
 
     //유저 리스트 가져오기
-    Axios.get("http://54.180.61.201:8080/").then((response) => {
+    Axios.get("http://54.180.61.201:8080").then((response) => {
       setUserList(response.data.reverse());
       console.log(response.data)
       setIsLoading(false);

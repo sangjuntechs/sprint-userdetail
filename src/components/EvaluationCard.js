@@ -43,6 +43,7 @@ const CardContainer = styled.div`
   margin-top: 30px;
   height: 500px;
   overflow: scroll;
+  cursor: all-scroll;
 `;
 
 const CardImg = styled.img`
@@ -61,6 +62,7 @@ const Input = styled.input`
   border: 2px solid gray;
   background-color: white;
   font-size: 16px;
+  font-weight:700;
 `;
 
 const Button = styled.button`
@@ -155,8 +157,13 @@ const SubmitButton = styled.button`
 const FoodDetail = styled.div`
   display: flex;
   margin-bottom: 15px;
+  margin-top:15px;
   flex-direction: column;
   justify-content: center;
+  background-color:rgba(220,220,220,0.5);
+  border-radius:5px;
+  padding:10px;
+  min-width:210px;
 `;
 
 const UserInfoContainer = styled.div`
@@ -284,7 +291,7 @@ const EvaluationCard = ({ match }) => {
     });
     setDayFoods(filterFoods);
     setFilterCards(filterCds);
-    setDate(searchInput + "T00:00:00");
+    setDate(searchInput + " 00:00:00");
     console.log(date);
   };
   //메뉴 지방 총 합
@@ -519,21 +526,15 @@ const EvaluationCard = ({ match }) => {
                 cards.cardType === 'food' ?
                 <Card key={cards.userId + cards.cardKey}>
                   <div>
-                  <p style={{ fontSize: "13px" }}>
-                    <b>카드 번호:</b> {cards.cardKey}
-                  </p>
-                  <p style={{ color: "green", fontSize: "13px" }}>
-                    <b>먹은 시간:</b> {cards.cardShowDt}
-                  </p>
-                  <p style={{ fontSize: "13px" }}>
-                    <b>생성 시간:</b> {cards.cardCreateDt}
+              
+                  <p style={{ color: "#94CB94", fontSize: "15px" ,margin:'0', marginBottom:'5px'}}>
+                    {cards.cardShowDt}에 식사 👏🏻
                   </p>
 
                   <p
                     style={{
                       fontSize: "18px",
-                      marginTop:'10px',
-                      marginBottom:'10px',
+                      margin:'0',
                       fontWeight: "700",
                     }}
                   >
@@ -548,13 +549,12 @@ const EvaluationCard = ({ match }) => {
                     .map((food) => {
                       return (
                         <FoodDetail key={food.cfKey}>
-                          <p style={{ color: "rgba(80,80,80)", margin:'0' }}>
+                          <p style={{margin:'0', fontSize:'14px' }}>
                             {" "}
-                            <b>{`${food.cfFoodName}, ${food.cfCalorie}kcal, ${food.cfGram}g `}</b>
+                            {`${food.cfFoodName}, ${food.cfCalorie}kcal, ${food.cfGram}g `}
                           </p>
                           <p style={{ fontSize: "12px", margin:'0' }}>
                             {/* 메뉴 별 g당 탄단지 */}
-                            {food.cfGram}g
                             {` (${(
                               (food.food100gGCarbohydrate / 100) *
                               food.cfGram
@@ -574,14 +574,9 @@ const EvaluationCard = ({ match }) => {
                 </Card>
                : <CardMemo key={cards.userId + cards.cardKey}>
                <div>
+               
                <p style={{ fontSize: "13px" }}>
-                 <b>카드 번호:</b> {cards.cardKey}
-               </p>
-               <p style={{ color: "green", fontSize: "13px" }}>
-                 <b>먹은 시간:</b> {cards.cardShowDt}
-               </p>
-               <p style={{ fontSize: "13px" }}>
-                 <b>생성 시간:</b> {cards.cardCreateDt}
+                 {cards.cardCreateDt}에 생성
                </p>
 
                <p
@@ -654,7 +649,7 @@ const EvaluationCard = ({ match }) => {
                 <p style={{ color: "black", fontSize: "14px", fontWeight:'700' }}>
                   Score : {beval.meScore}
                 </p>
-                <p style={{ marginTop: "20px" }}>{beval.meMemo}</p>
+                <p style={{ marginTop: "20px", fontWeight:'400', fontSize:'15px'}}>{beval.meMemo}</p>
               </BeforeEvalCard>
             );
           })}
