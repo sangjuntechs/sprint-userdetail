@@ -237,7 +237,7 @@ const EvaluationCard = ({ match }) => {
       }
     );
     Axios.get(
-      `http://54.180.61.201:8080/manager-evaluation/${match.params.id}`
+      `http://54.180.61.201:8080/space_for_nutrition_managers-0.0.1-SNAPSHOT/manager-evaluation/${match.params.id}`
     ).then((response) => {
       setManagerEval(response.data);
     });
@@ -267,7 +267,7 @@ const EvaluationCard = ({ match }) => {
   };
 
   const SubmitEval = () => {
-    Axios.post("http://54.180.61.201:8080/manager-evaluation", {
+    Axios.post("http://54.180.61.201:8080/space_for_nutrition_managers-0.0.1-SNAPSHOT/manager-evaluation", {
       userId: userId,
       meShowDt: date,
       meScore: evalGrade,
@@ -544,6 +544,14 @@ const EvaluationCard = ({ match }) => {
                     {cards.cardMemo}
                   </p>
 
+                  <p style={{margin:'0', fontSize:'12px', color:'gray', marginTop:'5px'}}>
+                   총 섭취량 {aCardFood.filter((foods) => {
+                    return foods.cardKey === cards.cardKey
+                  }).reduce((acc, curr) => {
+                    return acc + curr.cfGram
+                  },0)}g
+                  </p>
+
                   {/* a_card_food내용 card에 가져오기 */}
                   {aCardFood
                     .filter((foods) => {
@@ -574,11 +582,7 @@ const EvaluationCard = ({ match }) => {
                     })}
                     </div>
                   <CardImg src={cards.cardImage ? cards.cardImage : Logo} />
-                  {aCardFood.filter((foods) => {
-                    return foods.cardKey === cards.cardKey
-                  }).reduce((acc, curr) => {
-                    return acc + curr.cfGram
-                  },0)}
+                  
                 </Card>
                : <CardMemo key={cards.userId + cards.cardKey}>
                <div>
