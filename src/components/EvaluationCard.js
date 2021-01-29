@@ -5,7 +5,7 @@ import { Link } from "react-router-dom";
 import Axios from "axios";
 
 const Header = styled.div`
-  box-sizing:border-box;
+  box-sizing: border-box;
   display: flex;
   width: 100%;
   box-sizing: border-box;
@@ -24,29 +24,29 @@ const Img = styled.img`
 
 const Card = styled.div`
   display: flex;
-  box-sizing:border-box;
+  box-sizing: border-box;
   padding: 15px;
   box-shadow: 4px 8px 12px gray;
   border-radius: 15px;
   margin: 15px;
   width: 30%;
-  justify-content:space-around;
+  justify-content: space-around;
   align-items: center;
   z-index: 10;
-  width:100%;
+  width: 100%;
   max-width: 500px;
   background-color: white;
 `;
 
 const CardContainer = styled.div`
-  box-sizing:border-box;
+  box-sizing: border-box;
   display: flex;
   flex-direction: column;
   align-items: center;
   margin-top: 30px;
   height: 500px;
   overflow: scroll;
-  width:100%;
+  width: 100%;
   cursor: all-scroll;
 `;
 
@@ -54,8 +54,9 @@ const CardImg = styled.img`
   width: 200px;
   height: 200px;
   margin-bottom: 15px;
+  margin-left: 10px;
   border-radius: 8px;
-  z-index:10;
+  z-index: 10;
 `;
 
 const Input = styled.input`
@@ -66,7 +67,7 @@ const Input = styled.input`
   border: 2px solid gray;
   background-color: white;
   font-size: 16px;
-  font-weight:700;
+  font-weight: 700;
 `;
 
 const Button = styled.button`
@@ -94,7 +95,7 @@ const InputContainer = styled.div`
 `;
 
 const InputSet = styled.div`
-  box-sizing:border-box;
+  box-sizing: border-box;
   display: flex;
   justify-content: center;
   align-items: flex-start;
@@ -103,7 +104,7 @@ const InputSet = styled.div`
   background-color: rgba(240, 240, 240, 0.8);
   padding: 15px;
   border-radius: 10px;
-  height:100%;
+  height: 100%;
   @media (max-width: 375px) {
     width: 320px;
   }
@@ -116,8 +117,8 @@ const EvaluationContainer = styled.div`
   font-weight: 600;
   justify-content: space-around;
   border-bottom: 2px solid rgba(200, 200, 200);
-  @media (max-width:500px) {
-    flex-flow:wrap;
+  @media (max-width: 500px) {
+    flex-flow: wrap;
   }
 `;
 const BeforeEval = styled.div`
@@ -132,7 +133,7 @@ const BeforeEval = styled.div`
   background-color: rgba(240, 240, 240, 0.8);
   border-radius: 10px;
   cursor: all-scroll;
-  width:100%;
+  width: 100%;
 `;
 const BeforeEvalCard = styled.div`
   box-sizing: border-box;
@@ -166,18 +167,18 @@ const SubmitButton = styled.button`
 const FoodDetail = styled.div`
   display: flex;
   margin-bottom: 15px;
-  margin-top:15px;
+  margin-top: 15px;
   flex-direction: column;
   justify-content: center;
-  background-color:rgba(220,220,220,0.5);
-  border-radius:5px;
-  padding:10px;
-  min-width:210px;
-  max-width:270px;
+  background-color: rgba(220, 220, 220, 0.5);
+  border-radius: 5px;
+  padding: 10px;
+  min-width: 210px;
+  max-width: 270px;
 `;
 
 const UserInfoContainer = styled.div`
-  box-sizing:border-box;
+  box-sizing: border-box;
   background-color: rgba(240, 240, 240, 0.8);
   margin-bottom: 15px;
   padding: 15px;
@@ -187,7 +188,7 @@ const UserInfoContainer = styled.div`
 const Grid1 = styled.div`
   display: flex;
   flex-direction: column;
-  width:100%;
+  width: 100%;
 `;
 
 const AllNutrition = styled.div`
@@ -196,24 +197,24 @@ const AllNutrition = styled.div`
   border-radius: 10px;
   margin-left: 10px;
   margin-right: 10px;
-  width:110%;
+  width: 110%;
 `;
 
 const CardMemo = styled.div`
-  box-sizing:border-box;
+  box-sizing: border-box;
   display: flex;
   padding: 15px;
   box-shadow: 4px 8px 12px gray;
   border-radius: 15px;
   margin: 15px;
   width: 30%;
-  justify-content:space-around;
+  justify-content: space-around;
   align-items: center;
   z-index: 10;
-  width:100%;
+  width: 100%;
   max-width: 500px;
-  background-color: #E9F3F9;
-`
+  background-color: #e9f3f9;
+`;
 
 const EvaluationCard = ({ match }) => {
   const [userCards, setUserCards] = useState([]);
@@ -229,30 +230,27 @@ const EvaluationCard = ({ match }) => {
   const [userId, setUserId] = useState(match.params.id);
   const [writer, setWriter] = useState("");
 
-
   useEffect(() => {
-    Axios.get(`http://54.180.61.201:8080/space_for_nutrition_managers-0.0.1-SNAPSHOT/user-card/${match.params.id}`).then(
-      (response) => {
-        setUserCards(response.data);
-        console.log(response.data);
-      }
-    );
-    Axios.get(`http://54.180.61.201:8080/space_for_nutrition_managers-0.0.1-SNAPSHOT/${match.params.id}`).then(
-      (response) => {
-        setUserInfo(response.data);
-        console.log(response.data);
-      }
-    );
-    Axios.get(`http://54.180.61.201:8080/space_for_nutrition_managers-0.0.1-SNAPSHOT/card-food/${match.params.id}`).then(
-      (response) => {
-        setAcardFood(response.data);
-        console.log(response.data);
-      }
-    );
+    Axios.get(
+      `http://54.180.61.201:8080/space_for_nutrition_managers-0.0.1-SNAPSHOT/user-card/${match.params.id}`
+    ).then((response) => {
+      setUserCards(response.data);
+    });
+    Axios.get(
+      `http://54.180.61.201:8080/space_for_nutrition_managers-0.0.1-SNAPSHOT/${match.params.id}`
+    ).then((response) => {
+      setUserInfo(response.data);
+    });
+    Axios.get(
+      `http://54.180.61.201:8080/space_for_nutrition_managers-0.0.1-SNAPSHOT/card-food/${match.params.id}`
+    ).then((response) => {
+      setAcardFood(response.data);
+    });
     Axios.get(
       `http://54.180.61.201:8080/space_for_nutrition_managers-0.0.1-SNAPSHOT/manager-evaluation/${match.params.id}`
     ).then((response) => {
       setManagerEval(response.data);
+      console.log(response.data);
     });
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -280,13 +278,16 @@ const EvaluationCard = ({ match }) => {
   };
 
   const SubmitEval = () => {
-    Axios.post("http://54.180.61.201:8080/space_for_nutrition_managers-0.0.1-SNAPSHOT/manager-evaluation", {
-      userId: userId,
-      meShowDt: date,
-      meScore: evalGrade,
-      meMemo: evalLength,
-      managerId: writer,
-    }).then(console.log("success"));
+    Axios.post(
+      "http://54.180.61.201:8080/space_for_nutrition_managers-0.0.1-SNAPSHOT/manager-evaluation",
+      {
+        userId: userId,
+        meShowDt: date,
+        meScore: evalGrade,
+        meMemo: evalLength,
+        managerId: writer,
+      }
+    ).then(console.log("success"));
     window.location.reload();
   };
 
@@ -353,8 +354,6 @@ const EvaluationCard = ({ match }) => {
     return acc + (curr.food100gCalorie / 100) * curr.cfGram;
   }, 0);
 
-
-  
   let evalDay = new Date();
 
   let evalMonth = evalDay.getMonth() + 1;
@@ -363,10 +362,10 @@ const EvaluationCard = ({ match }) => {
   const evalDays = `${evalMonth}월 ${evalDate}일`;
 
   const onKeyPress = (e) => {
-    if(e.key === 'Enter') {
+    if (e.key === "Enter") {
       filterCardFn();
     }
-  }
+  };
 
   return (
     <>
@@ -374,7 +373,12 @@ const EvaluationCard = ({ match }) => {
         <Link to="/">
           <Img src={Logo} alt="logo" />
         </Link>
-        평가날짜 : {evalDays}
+        <div style={{ display: "flex", flexDirection: "column" }}>
+          <p>SPRINT Evaluation</p>
+          <p style={{ fontSize: "13px", marginTop: "0", fontWeight: "500" }}>
+            오늘 평가날짜는 {evalDays} 👍🏻
+          </p>
+        </div>
       </Header>
       <InputContainer>
         <Input
@@ -407,7 +411,7 @@ const EvaluationCard = ({ match }) => {
               {/* 성별 별 표준몸무게,칼로리 및 기초대사량 구하기 */}
               {userInfo
                 ? userInfo.userGender === 1
-                  ?`표준 몸무게: ${(
+                  ? `표준 몸무게: ${(
                       (parseInt(String(userInfo.userHeight).slice(-4, 3)) ** 2 /
                         10000) *
                       22
@@ -442,12 +446,10 @@ const EvaluationCard = ({ match }) => {
             </p>
             <p style={{ marginBottom: "20px", fontSize: "14px" }}>
               {userInfo
-                ? `${userInfo.userName} ${String(
-                    userInfo.userWeight
-                  ).slice(-3, 2)}kg ${String(userInfo.userHeight).slice(
-                    -4,
-                    3
-                  )}cm`
+                ? `${userInfo.userName} ${String(userInfo.userWeight).slice(
+                    -3,
+                    2
+                  )}kg ${String(userInfo.userHeight).slice(-4, 3)}cm`
                 : ""}
             </p>
           </UserInfoContainer>
@@ -510,7 +512,7 @@ const EvaluationCard = ({ match }) => {
               marginBottom: "15px",
             }}
           >
-           🧐 전체 영양정보
+            🧐 전체 영양정보
           </p>
           {/*전체 영양정보 표시*/}
           <p
@@ -536,117 +538,125 @@ const EvaluationCard = ({ match }) => {
             )}mg 나트륨: ${Math.floor(sumSodium)}mg`}
           </p>
           <CardContainer>
-            
             {filterCards.map((cards) => {
-              return (
-                cards.cardType === 'food' ?
+              return cards.cardType === "food" ? (
                 <Card key={cards.userId + cards.cardKey}>
                   <div>
-              
-                  <p style={{ color: "#94CB94", fontSize: "15px" ,margin:'0', marginBottom:'5px', fontWeight:'700'}}>
-                    {cards.cardShowDt}에 식사 👏🏻
-                  </p>
+                    <p
+                      style={{
+                        color: "#94CB94",
+                        fontSize: "15px",
+                        margin: "0",
+                        marginBottom: "5px",
+                        fontWeight: "700",
+                      }}
+                    >
+                      {cards.cardShowDt}에 식사 👏🏻
+                    </p>
 
-                  <p
-                    style={{
-                      fontSize: "17px",
-                      margin:'0',
-                      fontWeight:'500'
-                    }}
-                  >
-                    {cards.cardMemo}
-                  </p>
+                    <p
+                      style={{
+                        fontSize: "17px",
+                        margin: "0",
+                        fontWeight: "500",
+                      }}
+                    >
+                      {cards.cardMemo}
+                    </p>
 
-                  <p style={{margin:'0', fontSize:'12px', color:'gray'}}>
-                   총 섭취량 {aCardFood.filter((foods) => {
-                    return foods.cardKey === cards.cardKey
-                  }).reduce((acc, curr) => {
-                    return acc + curr.cfGram
-                  },0)}g
-                  </p>
+                    <p style={{ margin: "0", fontSize: "12px", color: "gray" }}>
+                      총 섭취량{" "}
+                      {aCardFood
+                        .filter((foods) => {
+                          return foods.cardKey === cards.cardKey;
+                        })
+                        .reduce((acc, curr) => {
+                          return acc + curr.cfGram;
+                        }, 0)}
+                      g
+                    </p>
 
-                  {/* a_card_food내용 card에 가져오기 */}
-                  {aCardFood
-                    .filter((foods) => {
-                      return foods.cardKey === cards.cardKey;
-                    })
-                    .map((food) => {
-                      return (
-                        <FoodDetail key={food.cfKey}>
-                          <p style={{margin:'0', fontSize:'14px' }}>
-                            {`${food.cfFoodName}, ${food.cfCalorie}kcal, ${food.cfGram}g `}
-                            
-                          </p>
-                          <p style={{ fontSize: "12px", margin:'0' }}>
-                            {/* 메뉴 별 g당 탄단지 */}
-                            {` (${(
-                              (food.food100gGCarbohydrate / 100) *
-                              food.cfGram
-                            ).toFixed(1)}/ ${(
-                              (food.food100gGProtein / 100) *
-                              food.cfGram
-                            ).toFixed(1)}/ ${(
-                              (food.food100gGFat / 100) *
-                              food.cfGram
-                            ).toFixed(1)})`}
-                          </p>
-                        </FoodDetail>
-                      );
-                    })}
-                    </div>
+                    {/* a_card_food내용 card에 가져오기 */}
+                    {aCardFood
+                      .filter((foods) => {
+                        return foods.cardKey === cards.cardKey;
+                      })
+                      .map((food) => {
+                        return (
+                          <FoodDetail key={food.cfKey}>
+                            <p style={{ margin: "0", fontSize: "14px" }}>
+                              {`${food.cfFoodName}, ${food.cfCalorie}kcal, ${food.cfGram}g `}
+                            </p>
+                            <p style={{ fontSize: "12px", margin: "0" }}>
+                              {/* 메뉴 별 g당 탄단지 */}
+                              {` (${(
+                                (food.food100gGCarbohydrate / 100) *
+                                food.cfGram
+                              ).toFixed(1)}/ ${(
+                                (food.food100gGProtein / 100) *
+                                food.cfGram
+                              ).toFixed(1)}/ ${(
+                                (food.food100gGFat / 100) *
+                                food.cfGram
+                              ).toFixed(1)})`}
+                            </p>
+                          </FoodDetail>
+                        );
+                      })}
+                  </div>
                   <CardImg src={cards.cardImage ? cards.cardImage : Logo} />
-                  
                 </Card>
-               : <CardMemo key={cards.userId + cards.cardKey}>
-               <div>
-               
-               <p style={{ fontSize: "13px" }}>
-                 {cards.cardCreateDt}에 생성
-               </p>
+              ) : (
+                <CardMemo key={cards.userId + cards.cardKey}>
+                  <div>
+                    <p style={{ fontSize: "13px" }}>
+                      {cards.cardCreateDt}에 생성
+                    </p>
 
-               <p
-                 style={{
-                   fontSize: "16px",
-                   marginTop:'10px',
-                   marginBottom:'10px',
-                   fontWeight:'500'
-                 }}
-               >
-                 {cards.cardMemo}
-               </p>
+                    <p
+                      style={{
+                        fontSize: "16px",
+                        marginTop: "10px",
+                        marginBottom: "10px",
+                        fontWeight: "500",
+                      }}
+                    >
+                      {cards.cardMemo}
+                    </p>
 
-               {/* a_card_food내용 card에 가져오기 */}
-               {aCardFood
-                 .filter((foods) => {
-                   return foods.cardKey === cards.cardKey;
-                 })
-                 .map((food) => {
-                   return (
-                     <FoodDetail key={food.cfKey}>
-                       <p style={{ color: "rgba(80,80,80)" }}>
-                         {" "}
-                         <b>{`${food.cfFoodName}, ${food.cfCalorie}kcal, ${food.cfGram}g `}</b>
-                       </p>
-                       <p style={{ fontSize: "12px" }}>
-                         {/* 메뉴 별 g당 탄단지 */}
-                         {food.cfGram}g
-                         {` 탄:${(
-                           (food.food100gGCarbohydrate / 100) *
-                           food.cfGram
-                         ).toFixed(1)} 단:${(
-                           (food.food100gGProtein / 100) *
-                           food.cfGram
-                         ).toFixed(1)} 지:${(
-                           (food.food100gGFat / 100) *
-                           food.cfGram
-                         ).toFixed(1)}`}
-                       </p>
-                     </FoodDetail>
-                   );
-                 })}
-                 </div>
-               <CardImg src={cards.cardImage ? cards.cardImage : Logo} />
-             </CardMemo>);
+                    {/* a_card_food내용 card에 가져오기 */}
+                    {aCardFood
+                      .filter((foods) => {
+                        return foods.cardKey === cards.cardKey;
+                      })
+                      .map((food) => {
+                        return (
+                          <FoodDetail key={food.cfKey}>
+                            <p style={{ color: "rgba(80,80,80)" }}>
+                              {" "}
+                              <b>{`${food.cfFoodName}, ${food.cfCalorie}kcal, ${food.cfGram}g `}</b>
+                            </p>
+                            <p style={{ fontSize: "12px" }}>
+                              {/* 메뉴 별 g당 탄단지 */}
+                              {food.cfGram}g
+                              {` 탄:${(
+                                (food.food100gGCarbohydrate / 100) *
+                                food.cfGram
+                              ).toFixed(1)} 단:${(
+                                (food.food100gGProtein / 100) *
+                                food.cfGram
+                              ).toFixed(1)} 지:${(
+                                (food.food100gGFat / 100) *
+                                food.cfGram
+                              ).toFixed(1)}`}
+                            </p>
+                          </FoodDetail>
+                        );
+                      })}
+                  </div>
+                  <CardImg src={cards.cardImage ? cards.cardImage : Logo} />
+                </CardMemo>
+              );
             })}
           </CardContainer>
         </AllNutrition>
@@ -660,23 +670,40 @@ const EvaluationCard = ({ match }) => {
                     color: "#94CB94",
                     fontSize: "16px",
                     fontWeight: "700",
-                    margin:'0',
-                    marginBottom:'15px'
+                    margin: "0",
+                    marginBottom: "15px",
                   }}
                 >
                   {String(beval.meShowDt).slice(0, 10)} 피드백
                 </p>
-                <p style={{ color: "gray", fontSize: "12px", margin:'0' }}>
+                <p style={{ color: "gray", fontSize: "12px", margin: "0" }}>
                   {beval.meCreateDt}
                 </p>
-                <p style={{ color: "gray", fontSize: "12px",margin:'0'  }}>
+                <p style={{ color: "gray", fontSize: "12px", margin: "0" }}>
                   {beval.managerId}
                 </p>
-                
-                <p style={{ color: "black", fontSize: "14px", fontWeight:'700',margin:'0', marginTop:'5px'  }}>
+
+                <p
+                  style={{
+                    color: "black",
+                    fontSize: "14px",
+                    fontWeight: "700",
+                    margin: "0",
+                    marginTop: "5px",
+                  }}
+                >
                   Score : {beval.meScore}
                 </p>
-                <p style={{  fontWeight:'400', fontSize:'14px', margin:'0',marginTop: "15px"}}>{beval.meMemo}</p>
+                <p
+                  style={{
+                    fontWeight: "400",
+                    fontSize: "14px",
+                    margin: "0",
+                    marginTop: "15px",
+                  }}
+                >
+                  {beval.meMemo}
+                </p>
               </BeforeEvalCard>
             );
           })}

@@ -1,26 +1,28 @@
 /* eslint-disable array-callback-return */
 import React, { useEffect, useState } from "react";
 import styled from "styled-components";
-import Axios from 'axios';
+import Axios from "axios";
 import Logo from "../img/AppIconNoopac.png";
 import { Link } from "react-router-dom";
+import Calendar from "react-calendar";
+import "react-calendar/dist/Calendar.css";
 
 const Header = styled.div`
   box-sizing: border-box;
   display: flex;
   width: 100%;
-  align-items:center;
-  font-size:22px;
-  font-weight:700;
-  padding:30px;
+  align-items: center;
+  font-size: 22px;
+  font-weight: 700;
+  padding: 30px;
 `;
 
 const Img = styled.img`
-  width:50px;
-  height:50px;
-  margin-right:15px;
-  border-radius:50%;
-`
+  width: 50px;
+  height: 50px;
+  margin-right: 15px;
+  border-radius: 50%;
+`;
 
 const Button = styled.button`
   all: unset;
@@ -57,97 +59,172 @@ const SearchBox = styled.div`
 `;
 
 const Card = styled.div`
-    position:relative;
-    width:40%;
-    min-width:300px;
-    padding:15px;
-    box-shadow:4px 8px 12px gray;
-    border-radius:15px;
-    margin:30px;
-    font-size:14px;
-    color:rgb(50,50,50);
-    @media(max-width:375px) {
-    width:300px;
-    font-size:12px;
+  position: relative;
+  width: 100%;
+  min-width: 400px;
+  padding: 15px;
+  box-shadow: 4px 8px 12px gray;
+  border-radius: 15px;
+  margin: 10px;
+  font-size: 14px;
+  color: rgb(50, 50, 50);
+  background-color: white;
+  @media (max-width: 375px) {
+    width: 300px;
+    font-size: 12px;
   }
-`
+`;
 const CardBox = styled.div`
-    display:flex;
-    justify-content:center;
-    align-items:center;
-`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+`;
 
 const DcardButton = styled.button`
-    all:unset;
-    border: 2px solid #41D2A2;
-    color:#41D2A2;
-    font-weight:600;
-    border-radius:5px;
-    position:absolute;
-    right:15px;
-    bottom:15px;
-    padding:5px;
-    transition:0.1s linear;
-    cursor:pointer;
-    :hover {
-        color:white;
-        background-color:#41D2A2;
-    }
-    @media(max-width:375px) {
-    padding:0.2rem;
-    font-size:10px;
-    font-weight:500;
+  all: unset;
+  border: 2px solid #41d2a2;
+  color: #41d2a2;
+  font-weight: 600;
+  border-radius: 5px;
+  position: absolute;
+  right: 10px;
+  bottom: 10px;
+  padding: 5px;
+  transition: 0.1s linear;
+  cursor: pointer;
+  :hover {
+    color: white;
+    background-color: #41d2a2;
   }
-`
+  @media (max-width: 375px) {
+    padding: 0.2rem;
+    font-size: 10px;
+    font-weight: 500;
+  }
+`;
+
+const MyUserContainer = styled.div`
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  margin: 15px;
+  width: 100%;
+  background-color: rgba(220, 220, 220, 0.5);
+  border-radius: 10px;
+`;
+
+const EvalContainer = styled.div`
+  display: flex;
+  justify-content: space-around;
+  margin-top: 15px;
+`;
+
+const CalendarContainer = styled.div`
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  margin: 15px;
+  width: 50%;
+`;
 
 const Evaluation = () => {
+  const [searchInput, setSearchInput] = useState("");
+  const [searchList, setSearchList] = useState([]);
+  const [filterUser, setFilterUser] = useState(searchList);
+  const [startDate, setStartDate] = useState(new Date());
+  const [searchEval, setSearchEval] = useState([]);
+  const [filterAdminId, setFilterAdminId] = useState([]);
 
-    const [searchInput, setSearchInput] = useState('');
-    const [searchList, setSearchList] = useState([]);
-    const [filterUser, setFilterUser] = useState(searchList);
+  useEffect(() => {
+    //프리미엄 유저 id가져오기
 
-    useEffect(() => {
-        //프리미엄 유저 id가져오기
-    
-        //유저 리스트 가져오기
-        Axios.get("http://54.180.61.201:8080/space_for_nutrition_managers-0.0.1-SNAPSHOT/premium-user").then((response) => {
-          setSearchList(response.data);
-        });
-    
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-      }, []); 
+    //유저 리스트 가져오기
+    Axios.get(
+      "http://54.180.61.201:8080/space_for_nutrition_managers-0.0.1-SNAPSHOT/premium-user"
+    ).then((response) => {
+      setSearchList(response.data);
+    });
 
-      const onChange = (event) => {
-        const {
-          target: { name, value },
-        } = event;
-        if (name === "adminId") {
-          setSearchInput(value);
-        }
-      };
+    // userlist + evaluationcard
+    Axios.get(
+      `http://54.180.61.201:8080/space_for_nutrition_managers-0.0.1-SNAPSHOT/premium-user/evaluation`
+    ).then((response) => {
+      setSearchEval(response.data);
+      console.log(response.data);
+    });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
-      const filterUserFn = () => {
-        const filterUsers = searchList.filter((users) => {
-         if (users.adminId) {
-            return users.adminId.toLowerCase().includes(searchInput)
-         }
-        });
-        setFilterUser(filterUsers.reverse());
-      };
+  const onChange = (event) => {
+    const {
+      target: { name, value },
+    } = event;
+    if (name === "adminId") {
+      setSearchInput(value);
+    }
+  };
+  const getFormatDate = (date) => {
+    let year = date.getFullYear();
+    let month = 1 + date.getMonth();
+    month = month >= 10 ? month : "0" + month;
+    let day = date.getDate();
+    day = day >= 10 ? day : "0" + day;
+    return year + "-" + month + "-" + day;
+  };
 
-      const onKeyPress = (e) => {
-        if(e.key === 'Enter') {
-          filterUserFn();
-        }
+  let formatDate = getFormatDate(startDate);
+
+  //adminid 일치하는 경우 필터링
+  const filterUserFn = () => {
+    const filterUsers = searchEval.filter((users) => {
+      if (users.adminId) {
+        return (
+          users.meShowDt.includes(formatDate) &&
+          users.adminId.toLowerCase().includes(searchInput)
+        );
       }
+    });
+    setFilterUser(filterUsers);
+
+    const filterIds = searchList.filter((users) => {
+      if (users.adminId) {
+        return users.adminId.toLowerCase().includes(searchInput);
+      }
+    });
+    setFilterAdminId(filterIds);
+  };
+
+
+  //엔터키 클릭
+  const onKeyPress = (e) => {
+    if (e.key === "Enter") {
+      filterUserFn();
+    }
+  };
+
+  //back-end와 날짜 형식 맞추기
+
+  const getShowingDate = (date) => {
+    let month = 1 + date.getMonth();
+    month = month >= 10 ? month : "0" + month;
+    let day = date.getDate();
+    day = day >= 10 ? day : "0" + day;
+    return month + "월 " + day + "일";
+  };
+
+  let showingDate = getShowingDate(startDate);
 
   return (
     <>
       <Header>
-      <Link to='/'><Img src={Logo} alt="logo" /></Link>
-        SPRINT Feedback
+        <Link to="/">
+          <Img src={Logo} alt="logo" />
+        </Link>
+        <div style={{ display: "flex", flexDirection: "column" }}>
+          <p>SPRINT Feedback</p>
+        </div>
       </Header>
-      
+
       <SearchBox>
         <Input
           name="adminId"
@@ -158,22 +235,68 @@ const Evaluation = () => {
         />
         <Button onClick={filterUserFn}>검색</Button>
       </SearchBox>
-      {filterUser.map((user) => {
-          return (
-              <CardBox key={user.userId}>
-              <Card>
-                <h2>{user.userName}</h2>
-                <p><b>유저 아이디:</b> {user.userId}</p>
-                <p><b>유저 관리자:</b> {user.adminId}</p>
-                <Link to = {`evaluations/${user.userId}`}>
-                <DcardButton>카드보기</DcardButton>
-                </Link>
-              </Card>
-              
-              </CardBox>
-          )
-          
-      })}
+      <EvalContainer>
+        <CalendarContainer>
+          <div style={{ margin: "20px", fontWeight: "600" }}>
+            📆 카드 날짜 선택
+          </div>
+          <Calendar
+            value={startDate}
+            onChange={setStartDate}
+            onKeyPress={onKeyPress}
+          />
+        </CalendarContainer>
+        <MyUserContainer>
+          <div style={{ margin: "20px", fontWeight: "600" }}>
+            {`🌲 ${showingDate} 작성된 유저`}
+          </div>
+          <div style={{ height: "600px", overflow: "scroll" }}>
+            {filterUser.map((user) => {
+              return (
+                <CardBox key={user.userId + user.meCreateDt}>
+                  <Card>
+                    <h2>{user.userName}</h2>
+                    <p>
+                      <b>유저 아이디:</b> {user.userId}
+                    </p>
+                    <p>
+                      <b>유저 관리자:</b> {user.adminId}
+                    </p>
+                    <Link to={`evaluations/${user.userId}`}>
+                      <DcardButton>카드보기</DcardButton>
+                    </Link>
+                  </Card>
+                </CardBox>
+              );
+            })}
+          </div>
+        </MyUserContainer>
+        <MyUserContainer>
+          <div style={{ margin: "20px", fontWeight: "600" }}>
+            {` 🌍 모든 유저`}
+          </div>
+          <div style={{ height: "600px", overflow: "scroll" }}>
+            {filterAdminId.map((user) => {
+              return (
+                <CardBox key={user.userId + user.meCreateDt}>
+                  <Card>
+                    <h2>{user.userName}</h2>
+                    <p>
+                      <b>유저 아이디:</b> {user.userId}
+                    </p>
+                    <p>
+                      <b>유저 관리자:</b> {user.adminId}
+                    </p>
+                    <Link to={`evaluations/${user.userId}`}>
+                      <DcardButton>카드보기</DcardButton>
+                    </Link>
+                  </Card>
+                </CardBox>
+              );
+            })}
+          </div>
+        </MyUserContainer>
+      </EvalContainer>
     </>
   );
 };
