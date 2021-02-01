@@ -245,6 +245,7 @@ const EvaluationCard = ({ match }) => {
       `http://54.180.61.201:8080/space_for_nutrition_managers-0.0.1-SNAPSHOT/card-food/${match.params.id}`
     ).then((response) => {
       setAcardFood(response.data);
+      console.log(response.data)
     });
     Axios.get(
       `http://54.180.61.201:8080/space_for_nutrition_managers-0.0.1-SNAPSHOT/manager-evaluation/${match.params.id}`
@@ -308,6 +309,7 @@ const EvaluationCard = ({ match }) => {
     setFilterCards(filterCds);
     setDate(searchInput + " 00:00:00");
     console.log(date);
+    console.log(dayFoods)
   };
   //메뉴 지방 총 합
   let sumFoodsFat = dayFoods.reduce((acc, curr) => {
@@ -401,7 +403,14 @@ const EvaluationCard = ({ match }) => {
             >
               👤 유저 정보
             </p>
-
+            <p style={{ marginBottom: "20px", fontSize: "14px" }}>
+              {userInfo
+                ? `${userInfo.userName} ${String(userInfo.userWeight).slice(
+                    -3,
+                    2
+                  )}kg ${String(userInfo.userHeight).slice(-4, 3)}cm`
+                : ""}
+            </p>
             <p
               style={{
                 fontWeight: "700",
@@ -444,14 +453,7 @@ const EvaluationCard = ({ match }) => {
                 }kcal`
                 : ""}
             </p>
-            <p style={{ marginBottom: "20px", fontSize: "14px" }}>
-              {userInfo
-                ? `${userInfo.userName} ${String(userInfo.userWeight).slice(
-                    -3,
-                    2
-                  )}kg ${String(userInfo.userHeight).slice(-4, 3)}cm`
-                : ""}
-            </p>
+            
           </UserInfoContainer>
           <InputSet>
             유저 아이디
@@ -487,6 +489,7 @@ const EvaluationCard = ({ match }) => {
               placeholder="0.0~5.0"
               value={evalGrade}
               onChange={onChange}
+              maxLength='3'
             />
             평가
             <textarea
@@ -515,6 +518,9 @@ const EvaluationCard = ({ match }) => {
             🧐 전체 영양정보
           </p>
           {/*전체 영양정보 표시*/}
+          <p style={{fontWeight: "400", fontSize:'14px', marginBottom:'10px' }}>모든 음식 섭취량 {dayFoods.reduce((acc, curr) => {
+            return acc + curr.cfGram;
+          },0)}g</p>
           <p
             style={{ marginBottom: "5px", fontWeight: "700" }}
           >{`열량: ${sumCalorie.toFixed(
@@ -529,6 +535,7 @@ const EvaluationCard = ({ match }) => {
           <p
             style={{
               fontSize: "14px",
+              marginBottom: "10px"
             }}
           >
             {`포화지방: ${Math.floor(sumSatFat)}g 트랜스지방: ${Math.floor(
@@ -537,6 +544,7 @@ const EvaluationCard = ({ match }) => {
               sumCholesterol
             )}mg 나트륨: ${Math.floor(sumSodium)}mg`}
           </p>
+          
           <CardContainer>
             {filterCards.map((cards) => {
               return cards.cardType === "food" ? (

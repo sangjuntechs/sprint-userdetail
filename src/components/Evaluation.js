@@ -5,7 +5,7 @@ import Axios from "axios";
 import Logo from "../img/AppIconNoopac.png";
 import { Link } from "react-router-dom";
 import Calendar from "react-calendar";
-import "react-calendar/dist/Calendar.css";
+import "../css/Calendar.css";
 
 const Header = styled.div`
   box-sizing: border-box;
@@ -163,6 +163,8 @@ const Evaluation = () => {
       setSearchInput(value);
     }
   };
+
+  //날짜 포멧 맞추기
   const getFormatDate = (date) => {
     let year = date.getFullYear();
     let month = 1 + date.getMonth();
@@ -184,6 +186,7 @@ const Evaluation = () => {
         );
       }
     });
+
     setFilterUser(filterUsers);
 
     const filterIds = searchList.filter((users) => {
@@ -191,9 +194,10 @@ const Evaluation = () => {
         return users.adminId.toLowerCase().includes(searchInput);
       }
     });
-    setFilterAdminId(filterIds);
-  };
 
+    setFilterAdminId(filterIds);
+
+  };
 
   //엔터키 클릭
   const onKeyPress = (e) => {
@@ -248,10 +252,10 @@ const Evaluation = () => {
         </CalendarContainer>
         <MyUserContainer>
           <div style={{ margin: "20px", fontWeight: "600" }}>
-            {`🌲 ${showingDate} 작성된 유저`}
+            {` 🌍 모든 유저`}
           </div>
           <div style={{ height: "600px", overflow: "scroll" }}>
-            {filterUser.map((user) => {
+            {filterAdminId.map((user) => {
               return (
                 <CardBox key={user.userId + user.meCreateDt}>
                   <Card>
@@ -273,10 +277,10 @@ const Evaluation = () => {
         </MyUserContainer>
         <MyUserContainer>
           <div style={{ margin: "20px", fontWeight: "600" }}>
-            {` 🌍 모든 유저`}
+            {`🌲 ${showingDate} 피드백된 유저`}
           </div>
           <div style={{ height: "600px", overflow: "scroll" }}>
-            {filterAdminId.map((user) => {
+            {filterUser.map((user) => {
               return (
                 <CardBox key={user.userId + user.meCreateDt}>
                   <Card>
