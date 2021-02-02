@@ -14,8 +14,8 @@ const AppRouter = () => {
       <Route path='/:adminid/:adminpw' exact component={Home}/>
       <Switch>
         <Route path="/:adminid/user/:id" exact component={UserDetail} />
-        <Route path="/evaluation" exact component={Evaluation} />
-        <Route path="/evaluations/:id" exact component={EvaluationCard} />
+        <Route path="/:adminid/evaluation" exact component={Evaluation} />
+        <Route path="/:adminid/evaluations/:id" exact component={EvaluationCard} />
       </Switch>
     </>
   );

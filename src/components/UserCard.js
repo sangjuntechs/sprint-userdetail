@@ -221,7 +221,7 @@ const UserCard = () => {
         <>
           <Cp>현재 페이지: {currentPage}page</Cp>
           <Button onClick={getPremiumUser}>프리미엄 유저 찾기</Button>
-          <Link to='/evaluation'>
+          <Link to={`evaluation`}>
           <EvalButton>평가하기</EvalButton>
           </Link>
           

@@ -127,13 +127,14 @@ const CalendarContainer = styled.div`
   width: 50%;
 `;
 
-const Evaluation = () => {
+const Evaluation = ({match}) => {
   const [searchInput, setSearchInput] = useState("");
   const [searchList, setSearchList] = useState([]);
   const [filterUser, setFilterUser] = useState(searchList);
   const [startDate, setStartDate] = useState(new Date());
   const [searchEval, setSearchEval] = useState([]);
   const [filterAdminId, setFilterAdminId] = useState([]);
+  const [admin, setAdmin] = useState([]);
 
   useEffect(() => {
     //프리미엄 유저 id가져오기
@@ -153,6 +154,12 @@ const Evaluation = () => {
       console.log(response.data);
     });
     // eslint-disable-next-line react-hooks/exhaustive-deps
+    Axios.get(
+      `http://54.180.61.201:8080/space_for_nutrition_managers-0.0.1-SNAPSHOT/admin`
+    ).then((response) => {
+      setAdmin(response.data);
+      console.log(response.data)
+    });
   }, []);
 
   const onChange = (event) => {
@@ -217,11 +224,12 @@ const Evaluation = () => {
   };
 
   let showingDate = getShowingDate(startDate);
+  let getAdmin = admin.find((admin) =>  admin.adminId === match.params.adminid);
 
   return (
     <>
-      <Header>
-        <Link to="/tt/tttt123">
+      {getAdmin ?(<><Header>
+        <Link to={`/${match.params.adminid}/evaluation`}>
           <Img src={Logo} alt="logo" />
         </Link>
         <div style={{ display: "flex", flexDirection: "column" }}>
@@ -300,7 +308,8 @@ const Evaluation = () => {
             })}
           </div>
         </MyUserContainer>
-      </EvalContainer>
+      </EvalContainer></>) : ""}
+      
     </>
   );
 };

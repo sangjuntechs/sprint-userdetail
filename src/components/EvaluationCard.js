@@ -228,7 +228,7 @@ const EvaluationCard = ({ match }) => {
   const [evalGrade, setEvalGrade] = useState("");
   const [date, setDate] = useState("");
   const [userId, setUserId] = useState(match.params.id);
-  const [writer, setWriter] = useState("");
+  const [writer, setWriter] = useState(match.params.adminid);
   const [userWeight, setUserWeight] = useState([]);
 
   useEffect(() => {
@@ -284,6 +284,10 @@ const EvaluationCard = ({ match }) => {
     }
   };
 
+  function reload() {
+    window.location.reload()
+  }
+
   const SubmitEval = () => {
     Axios.post(
       "http://54.180.61.201:8080/space_for_nutrition_managers-0.0.1-SNAPSHOT/manager-evaluation",
@@ -295,7 +299,7 @@ const EvaluationCard = ({ match }) => {
         managerId: writer,
       }
     ).then(console.log("success"));
-    window.location.reload();
+    setTimeout(reload, 500);
   };
 
   const filterCardFn = () => {
@@ -380,7 +384,7 @@ const EvaluationCard = ({ match }) => {
   return (
     <>
       <Header>
-        <Link to="/tt/tttt123">
+        <Link to={`/${match.params.adminid}/evaluation`}>
           <Img src={Logo} alt="logo" />
         </Link>
         <div style={{ display: "flex", flexDirection: "column" }}>
@@ -466,7 +470,7 @@ const EvaluationCard = ({ match }) => {
                 : ""}
             </p>
             <p style={{margin:'0', marginTop:'15px', fontSize:'16px', fontWeight:'700'}}>👊🏻 최근 몸무게</p>
-            <div style={{ fontSize: "13px", color: "gray", maxHeight:'70px', overflow:'scroll', marginTop:'5px'}}>
+            <div style={{ fontSize: "13px", color: "gray", maxHeight:'50px', overflow:'scroll', marginTop:'5px'}}>
               {userWeightReverse.map((weight) => {
                 return (
                   <div>
@@ -501,19 +505,6 @@ const EvaluationCard = ({ match }) => {
               value={match.params.id}
               disabled
             />
-            날짜
-            <input
-              style={{
-                marginBottom: "10px",
-                padding: "7px",
-                border: "2px solid gray",
-                borderRadius: "5px",
-              }}
-              type="text"
-              name="date2"
-              value={searchInput}
-              disabled
-            />
             작성자
             <input
               style={{
@@ -527,7 +518,22 @@ const EvaluationCard = ({ match }) => {
               value={writer}
               onChange={onChange}
               placeholder="ID"
+              disabled
             />
+            날짜
+            <input
+              style={{
+                marginBottom: "10px",
+                padding: "7px",
+                border: "2px solid gray",
+                borderRadius: "5px",
+              }}
+              type="text"
+              name="date2"
+              value={searchInput}
+              disabled
+            />
+            
             평가 점수
             <input
               style={{
