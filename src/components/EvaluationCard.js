@@ -44,7 +44,7 @@ const CardContainer = styled.div`
   flex-direction: column;
   align-items: center;
   margin-top: 30px;
-  height: 500px;
+  height: 600px;
   overflow: scroll;
   width: 100%;
   cursor: all-scroll;
@@ -129,7 +129,7 @@ const BeforeEval = styled.div`
   flex-direction: column;
   min-width: 350px;
   padding: 30px;
-  height: 700px;
+  height: 840px;
   background-color: rgba(240, 240, 240, 0.8);
   border-radius: 10px;
   cursor: all-scroll;
@@ -229,6 +229,7 @@ const EvaluationCard = ({ match }) => {
   const [date, setDate] = useState("");
   const [userId, setUserId] = useState(match.params.id);
   const [writer, setWriter] = useState("");
+  const [userWeight, setUserWeight] = useState([]);
 
   useEffect(() => {
     Axios.get(
@@ -240,18 +241,23 @@ const EvaluationCard = ({ match }) => {
       `http://54.180.61.201:8080/space_for_nutrition_managers-0.0.1-SNAPSHOT/${match.params.id}`
     ).then((response) => {
       setUserInfo(response.data);
+      console.log(response.data, "user");
     });
     Axios.get(
       `http://54.180.61.201:8080/space_for_nutrition_managers-0.0.1-SNAPSHOT/card-food/${match.params.id}`
     ).then((response) => {
       setAcardFood(response.data);
-      console.log(response.data)
     });
     Axios.get(
       `http://54.180.61.201:8080/space_for_nutrition_managers-0.0.1-SNAPSHOT/manager-evaluation/${match.params.id}`
     ).then((response) => {
       setManagerEval(response.data);
-      console.log(response.data);
+    });
+    Axios.get(
+      `http://54.180.61.201:8080/space_for_nutrition_managers-0.0.1-SNAPSHOT/weight/${match.params.id}`
+    ).then((response) => {
+      setUserWeight(response.data);
+      console.log(response.data, "weight");
     });
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -309,7 +315,7 @@ const EvaluationCard = ({ match }) => {
     setFilterCards(filterCds);
     setDate(searchInput + " 00:00:00");
     console.log(date);
-    console.log(dayFoods)
+    console.log(dayFoods);
   };
   //메뉴 지방 총 합
   let sumFoodsFat = dayFoods.reduce((acc, curr) => {
@@ -369,10 +375,12 @@ const EvaluationCard = ({ match }) => {
     }
   };
 
+  let userWeightReverse = userWeight.reverse();
+
   return (
     <>
       <Header>
-        <Link to="/">
+        <Link to="/tt/tttt123">
           <Img src={Logo} alt="logo" />
         </Link>
         <div style={{ display: "flex", flexDirection: "column" }}>
@@ -399,7 +407,11 @@ const EvaluationCard = ({ match }) => {
         <Grid1>
           <UserInfoContainer>
             <p
-              style={{ fontSize: "20px", color: "gray", marginBottom: "10px" }}
+              style={{
+                margin: "0",
+                marginBottom: "10px",
+                fontWeight: "700",
+              }}
             >
               👤 유저 정보
             </p>
@@ -453,12 +465,37 @@ const EvaluationCard = ({ match }) => {
                 }kcal`
                 : ""}
             </p>
-            
+            <p style={{margin:'0', marginTop:'15px', fontSize:'16px', fontWeight:'700'}}>👊🏻 최근 몸무게</p>
+            <div style={{ fontSize: "13px", color: "gray", maxHeight:'70px', overflow:'scroll', marginTop:'5px'}}>
+              {userWeightReverse.map((weight) => {
+                return (
+                  <div>
+                  <p>{`${String(weight.weightValue).slice(0, 2)}.${String(
+                    weight.weightValue
+                  ).slice(2, 3)}kg / ${weight.weightCreateDt.slice(0,10)}`}</p>
+                  </div>
+                );
+              })}
+            </div>
           </UserInfoContainer>
           <InputSet>
+            <p
+              style={{
+                margin: "0",
+                marginBottom: "10px",
+                fontWeight: "700",
+              }}
+            >
+              👋🏻 평가하기
+            </p>
             유저 아이디
             <input
-              style={{ marginBottom: "10px", padding: "7px", border:'2px solid gray', borderRadius:'5px'}}
+              style={{
+                marginBottom: "10px",
+                padding: "7px",
+                border: "2px solid gray",
+                borderRadius: "5px",
+              }}
               type="text"
               name="userId"
               value={match.params.id}
@@ -466,7 +503,12 @@ const EvaluationCard = ({ match }) => {
             />
             날짜
             <input
-              style={{ marginBottom: "10px", padding: "7px", border:'2px solid gray', borderRadius:'5px'}}
+              style={{
+                marginBottom: "10px",
+                padding: "7px",
+                border: "2px solid gray",
+                borderRadius: "5px",
+              }}
               type="text"
               name="date2"
               value={searchInput}
@@ -474,7 +516,12 @@ const EvaluationCard = ({ match }) => {
             />
             작성자
             <input
-              style={{ marginBottom: "10px", padding: "7px", border:'2px solid gray', borderRadius:'5px'}}
+              style={{
+                marginBottom: "10px",
+                padding: "7px",
+                border: "2px solid gray",
+                borderRadius: "5px",
+              }}
               type="text"
               name="writer"
               value={writer}
@@ -483,19 +530,31 @@ const EvaluationCard = ({ match }) => {
             />
             평가 점수
             <input
-              style={{ marginBottom: "10px", padding: "7px", border:'2px solid gray', borderRadius:'5px'}}
+              style={{
+                marginBottom: "10px",
+                padding: "10px",
+                border: "2px solid gray",
+                borderRadius: "5px",
+                width: "90%",
+              }}
               type="text"
               name="evalGrade"
-              placeholder="0.0~5.0"
+              placeholder="점수를 입력해주세요. (0.0~5.0)"
               value={evalGrade}
               onChange={onChange}
-              maxLength='3'
+              maxLength="3"
             />
             평가
             <textarea
-              style={{ width: "340px", height: "150px", padding: "5px", border:'2px solid gray', borderRadius:'5px' }}
+              style={{
+                width: "90%",
+                height: "150px",
+                padding: "10px",
+                border: "2px solid gray",
+                borderRadius: "5px",
+              }}
               type="textarea"
-              placeholder="평가하세요."
+              placeholder="내용을 입력해주세요."
               name="evaluation"
               value={evalLength}
               onChange={onChange}
@@ -509,18 +568,27 @@ const EvaluationCard = ({ match }) => {
         <AllNutrition>
           <p
             style={{
-              color: "gray",
-              fontSize: "22px",
-              fontWeight: "600",
-              marginBottom: "15px",
+              margin: "0",
+              marginBottom: "10px",
+              fontWeight: "700",
             }}
           >
             🧐 전체 영양정보
           </p>
           {/*전체 영양정보 표시*/}
-          <p style={{fontWeight: "400", fontSize:'14px', marginBottom:'10px' }}>모든 음식 섭취량 {dayFoods.reduce((acc, curr) => {
-            return acc + curr.cfGram;
-          },0)}g</p>
+          <p
+            style={{
+              fontWeight: "400",
+              fontSize: "14px",
+              marginBottom: "10px",
+            }}
+          >
+            모든 음식 섭취량{" "}
+            {dayFoods.reduce((acc, curr) => {
+              return acc + curr.cfGram;
+            }, 0)}
+            g
+          </p>
           <p
             style={{ marginBottom: "5px", fontWeight: "700" }}
           >{`열량: ${sumCalorie.toFixed(
@@ -535,7 +603,7 @@ const EvaluationCard = ({ match }) => {
           <p
             style={{
               fontSize: "14px",
-              marginBottom: "10px"
+              marginBottom: "10px",
             }}
           >
             {`포화지방: ${Math.floor(sumSatFat)}g 트랜스지방: ${Math.floor(
@@ -544,7 +612,7 @@ const EvaluationCard = ({ match }) => {
               sumCholesterol
             )}mg 나트륨: ${Math.floor(sumSodium)}mg`}
           </p>
-          
+
           <CardContainer>
             {filterCards.map((cards) => {
               return cards.cardType === "food" ? (
@@ -559,7 +627,10 @@ const EvaluationCard = ({ match }) => {
                         fontWeight: "700",
                       }}
                     >
-                      {`${cards.cardShowDt.slice(10,13)}시 ${cards.cardShowDt.slice(14,16)}분에 식사 👏🏻`}
+                      {`${cards.cardShowDt.slice(
+                        10,
+                        13
+                      )}시 ${cards.cardShowDt.slice(14, 16)}분에 식사 👏🏻`}
                     </p>
 
                     <p
