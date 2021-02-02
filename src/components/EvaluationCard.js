@@ -399,11 +399,11 @@ const EvaluationCard = ({ match }) => {
         <Grid1>
           <UserInfoContainer>
             <p
-              style={{ fontSize: "20px", color: "gray", marginBottom: "15px" }}
+              style={{ fontSize: "20px", color: "gray", marginBottom: "10px" }}
             >
               👤 유저 정보
             </p>
-            <p style={{ marginBottom: "20px", fontSize: "14px" }}>
+            <p style={{ marginBottom: "10px", fontSize: "14px" }}>
               {userInfo
                 ? `${userInfo.userName} ${String(userInfo.userWeight).slice(
                     -3,
@@ -458,7 +458,7 @@ const EvaluationCard = ({ match }) => {
           <InputSet>
             유저 아이디
             <input
-              style={{ marginBottom: "10px", padding: "5px" }}
+              style={{ marginBottom: "10px", padding: "7px", border:'2px solid gray', borderRadius:'5px'}}
               type="text"
               name="userId"
               value={match.params.id}
@@ -466,7 +466,7 @@ const EvaluationCard = ({ match }) => {
             />
             날짜
             <input
-              style={{ marginBottom: "10px", padding: "5px" }}
+              style={{ marginBottom: "10px", padding: "7px", border:'2px solid gray', borderRadius:'5px'}}
               type="text"
               name="date2"
               value={searchInput}
@@ -474,16 +474,16 @@ const EvaluationCard = ({ match }) => {
             />
             작성자
             <input
-              style={{ marginBottom: "10px", padding: "5px" }}
+              style={{ marginBottom: "10px", padding: "7px", border:'2px solid gray', borderRadius:'5px'}}
               type="text"
               name="writer"
               value={writer}
               onChange={onChange}
-              placeholder="push your admin id"
+              placeholder="ID"
             />
             평가 점수
             <input
-              style={{ marginBottom: "10px", padding: "5px" }}
+              style={{ marginBottom: "10px", padding: "7px", border:'2px solid gray', borderRadius:'5px'}}
               type="text"
               name="evalGrade"
               placeholder="0.0~5.0"
@@ -493,7 +493,7 @@ const EvaluationCard = ({ match }) => {
             />
             평가
             <textarea
-              style={{ width: "340px", height: "150px", padding: "5px" }}
+              style={{ width: "340px", height: "150px", padding: "5px", border:'2px solid gray', borderRadius:'5px' }}
               type="textarea"
               placeholder="평가하세요."
               name="evaluation"
@@ -559,7 +559,7 @@ const EvaluationCard = ({ match }) => {
                         fontWeight: "700",
                       }}
                     >
-                      {cards.cardShowDt}에 식사 👏🏻
+                      {`${cards.cardShowDt.slice(10,13)}시 ${cards.cardShowDt.slice(14,16)}분에 식사 👏🏻`}
                     </p>
 
                     <p

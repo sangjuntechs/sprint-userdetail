@@ -44,7 +44,7 @@ const UserDetail = ({ match }) => {
           <p>생일 : {getUser.userBirthday}</p>
           <p>유저삭제상태 : {getUser.userDeleteYn}</p>
 
-          <Link to="/">Home</Link>
+          <Link to="/tt/tttt123">Home</Link>
         </UserDetailCard>
       ) : (
         <Loading />

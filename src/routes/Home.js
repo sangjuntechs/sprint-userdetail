@@ -1,10 +1,11 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import UserCard from "../components/UserCard";
 import styled from "styled-components";
 import { IoSearch } from "react-icons/io5";
 import Modal from 'react-modal'
 import Search from "../components/Search";
 import Logo from '../img/AppIconNoopac.png'
+import Axios from 'axios'
 
 
 const Header = styled.div`
@@ -75,8 +76,18 @@ const Img = styled.img`
 `
 
 
-const Home = () => {
+const Home = ( {match} ) => {
   const [viewSearch, setViewSearch] = useState(false);
+  const [admin, setAdmin] = useState([]);
+
+  useEffect(() => {
+    Axios.get(
+      `http://54.180.61.201:8080/space_for_nutrition_managers-0.0.1-SNAPSHOT/admin`
+    ).then((response) => {
+      setAdmin(response.data);
+      console.log(response.data)
+    });
+  },[])
 
   const onClickSearch = () => {
     setViewSearch(true);
@@ -84,8 +95,11 @@ const Home = () => {
   const onClickSearchClose = () => {
     setViewSearch(false);
   };
+
+  let getAdmin = admin.find((admin) =>  admin.adminId === match.params.adminid);
+  let getAdminPassword = admin.find((admin) => admin.adminPassword === match.params.adminpw)
   return (
-    <>
+    <>{getAdmin && getAdminPassword ? <>
       <Header>
         <Img src={Logo}/>SPRINT Manager
       </Header>
@@ -103,6 +117,7 @@ const Home = () => {
         </InModalContents>
       </Modal>
       <UserCard />
+      </> : ''}
       
     </>
   );
