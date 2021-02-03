@@ -3,6 +3,7 @@ import styled from "styled-components";
 import Logo from "../img/AppIconNoopac.png";
 import { Link } from "react-router-dom";
 import Axios from "axios";
+import "../css/EvaluationCard.css";
 
 const Header = styled.div`
   box-sizing: border-box;
@@ -216,9 +217,34 @@ const CardMemo = styled.div`
   background-color: #e9f3f9;
 `;
 
+const MemoSearchInput = styled.input`
+  padding: 10px;
+  width: 70%;
+  border-radius: 5px;
+  border: 1px solid gray;
+  margin-top: 5px;
+`;
+
+const ResetButton = styled.button`
+  margin-top:10px;
+  cursor:pointer;
+`
+
 const EvaluationCard = ({ match }) => {
+  //날짜 형식
+  const getFormatDate = (date) => {
+    let year = date.getFullYear();
+    let month = 1 + date.getMonth();
+    month = month >= 10 ? month : "0" + month;
+    let day = date.getDate();
+    day = day >= 10 ? day : "0" + day;
+    return year + "-" + month + "-" + day;
+  };
+  let now = new Date();
+
+  let formatDay = getFormatDate(now);
   const [userCards, setUserCards] = useState([]);
-  const [searchInput, setSearchInput] = useState("");
+  const [searchInput, setSearchInput] = useState(formatDay);
   const [filterCards, setFilterCards] = useState([]);
   const [aCardFood, setAcardFood] = useState([]);
   const [managerEval, setManagerEval] = useState([]);
@@ -230,6 +256,8 @@ const EvaluationCard = ({ match }) => {
   const [userId, setUserId] = useState(match.params.id);
   const [writer, setWriter] = useState(match.params.adminid);
   const [userWeight, setUserWeight] = useState([]);
+  const [findMemo, setFindMemo] = useState("");
+  const [findMemoArr, setFindMemoArr] = useState([]);
 
   useEffect(() => {
     Axios.get(
@@ -282,11 +310,23 @@ const EvaluationCard = ({ match }) => {
     if (name === "writer") {
       setWriter(value);
     }
+    if (name === "searchMemo") {
+      setFindMemo(value);
+      console.log(findMemo)
+    }
   };
+  
 
   function reload() {
-    window.location.reload()
+    window.location.reload();
   }
+
+  const findMemoWord = () => {
+    const fineMemoWords = managerEval.filter((evals) => {
+      return evals.meMemo.includes(findMemo);
+    });
+    setFindMemoArr(fineMemoWords);
+  };
 
   const SubmitEval = () => {
     Axios.post(
@@ -379,7 +419,19 @@ const EvaluationCard = ({ match }) => {
     }
   };
 
+  const onKeyPressHistory = (e) => {
+    if (e.key === "Enter") {
+      findMemoWord();
+    }
+  };
+
   let userWeightReverse = userWeight.reverse();
+  
+  //검색 초기화 함수
+  const resetFind = () => {
+    setFindMemoArr([]);
+    setFindMemo('');
+  }
 
   return (
     <>
@@ -469,15 +521,34 @@ const EvaluationCard = ({ match }) => {
                 }kcal`
                 : ""}
             </p>
-            <p style={{margin:'0', marginTop:'15px', fontSize:'16px', fontWeight:'700'}}>👊🏻 최근 몸무게</p>
-            <div style={{ fontSize: "13px", color: "gray", maxHeight:'50px', overflow:'scroll', marginTop:'5px'}}>
+            <p
+              style={{
+                margin: "0",
+                marginTop: "15px",
+                fontSize: "16px",
+                fontWeight: "700",
+              }}
+            >
+              👊🏻 몸무게 히스토리
+            </p>
+            <div
+              style={{
+                fontSize: "13px",
+                color: "gray",
+                maxHeight: "50px",
+                overflow: "scroll",
+                marginTop: "5px",
+              }}
+            >
               {userWeightReverse.map((weight) => {
                 return (
-                  <div>
-                  <p>{`${String(weight.weightValue).slice(0, 2)}.${String(
-                    weight.weightValue
-                  ).slice(2, 3)}kg / ${weight.weightCreateDt.slice(0,10)}`}</p>
-                  </div>
+                  <p className="weight">{`${String(weight.weightValue).slice(
+                    0,
+                    2
+                  )}.${String(weight.weightValue).slice(
+                    2,
+                    3
+                  )}kg / ${weight.weightCreateDt.slice(0, 10)}`}</p>
                 );
               })}
             </div>
@@ -533,7 +604,6 @@ const EvaluationCard = ({ match }) => {
               value={searchInput}
               disabled
             />
-            
             평가 점수
             <input
               style={{
@@ -747,6 +817,71 @@ const EvaluationCard = ({ match }) => {
         </AllNutrition>
         <BeforeEval>
           <b>🍕 과거 히스토리</b>
+            
+          <MemoSearchInput
+            value={findMemo}
+            onChange={onChange}
+            name="searchMemo"
+            type="text"
+            placeholder="이 말을 했었나? 라고 생각하는 단어를 적고 Enter!"
+            onKeyPress={onKeyPressHistory}
+          />
+          {findMemoArr[0] ? <ResetButton onClick={resetFind}>검색 초기화</ResetButton> : ""}
+          {findMemoArr.map((feval) => {
+            return (
+              <BeforeEvalCard key={feval.meKey}>
+                <p style={{
+                    color: "red",
+                    fontSize: "12px",
+                    fontWeight: "600",
+                    margin: "0",
+                    marginBottom: "5px",
+                  }}>🔍 검색된 평가</p>
+                <p
+                  style={{
+                    color: "#94CB94",
+                    fontSize: "16px",
+                    fontWeight: "700",
+                    margin: "0",
+                    marginBottom: "15px",
+                  }}
+                >
+                  {String(feval.meShowDt).slice(0, 10)} 피드백
+                </p>
+                <p style={{ color: "gray", fontSize: "12px", margin: "0" }}>
+                  {feval.meCreateDt}
+                </p>
+                <p style={{ color: "gray", fontSize: "12px", margin: "0" }}>
+                  {feval.managerId}
+                </p>
+
+                <p
+                  style={{
+                    color: "black",
+                    fontSize: "14px",
+                    fontWeight: "700",
+                    margin: "0",
+                    marginTop: "5px",
+                  }}
+                >
+                  Score : {feval.meScore}
+                </p>
+                <p
+                  style={{
+                    fontWeight: "400",
+                    fontSize: "14px",
+                    margin: "0",
+                    marginTop: "15px",
+                  }}
+                >
+                  {feval.meMemo}
+                </p>
+              </BeforeEvalCard>
+            );
+          })}
+
+
+
           {managerEval.map((beval) => {
             return (
               <BeforeEvalCard key={beval.meKey}>
