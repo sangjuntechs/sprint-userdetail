@@ -45,7 +45,7 @@ const CardContainer = styled.div`
   flex-direction: column;
   align-items: center;
   margin-top: 30px;
-  height: 600px;
+  height: 550px;
   overflow: scroll;
   width: 100%;
   cursor: all-scroll;
@@ -90,9 +90,11 @@ const Button = styled.button`
 `;
 
 const InputContainer = styled.div`
+  box-sizing:border-box;
   display: flex;
   justify-content: center;
   align-items: center;
+  height:100%;
 `;
 
 const InputSet = styled.div`
@@ -106,6 +108,7 @@ const InputSet = styled.div`
   padding: 15px;
   border-radius: 10px;
   height: 100%;
+  margin-bottom:10px;
   @media (max-width: 375px) {
     width: 320px;
   }
@@ -118,6 +121,7 @@ const EvaluationContainer = styled.div`
   font-weight: 600;
   justify-content: space-around;
   border-bottom: 2px solid rgba(200, 200, 200);
+  height:100%;
   @media (max-width: 500px) {
     flex-flow: wrap;
   }
@@ -130,7 +134,7 @@ const BeforeEval = styled.div`
   flex-direction: column;
   min-width: 350px;
   padding: 30px;
-  height: 840px;
+  height: 800px;
   background-color: rgba(240, 240, 240, 0.8);
   border-radius: 10px;
   cursor: all-scroll;
@@ -181,15 +185,17 @@ const FoodDetail = styled.div`
 const UserInfoContainer = styled.div`
   box-sizing: border-box;
   background-color: rgba(240, 240, 240, 0.8);
-  margin-bottom: 15px;
   padding: 15px;
   border-radius: 10px;
+  height:100%;
 `;
 
 const Grid1 = styled.div`
+  box-sizing:border-box;
   display: flex;
   flex-direction: column;
   width: 100%;
+  height:100%;
 `;
 
 const AllNutrition = styled.div`
@@ -226,9 +232,9 @@ const MemoSearchInput = styled.input`
 `;
 
 const ResetButton = styled.button`
-  margin-top:10px;
-  cursor:pointer;
-`
+  margin-top: 10px;
+  cursor: pointer;
+`;
 
 const EvaluationCard = ({ match }) => {
   //날짜 형식
@@ -258,6 +264,7 @@ const EvaluationCard = ({ match }) => {
   const [userWeight, setUserWeight] = useState([]);
   const [findMemo, setFindMemo] = useState("");
   const [findMemoArr, setFindMemoArr] = useState([]);
+  const [premium, setPremium] = useState([]);
 
   useEffect(() => {
     Axios.get(
@@ -285,7 +292,13 @@ const EvaluationCard = ({ match }) => {
       `http://54.180.61.201:8080/space_for_nutrition_managers-0.0.1-SNAPSHOT/weight/${match.params.id}`
     ).then((response) => {
       setUserWeight(response.data);
-      console.log(response.data, "weight");
+    });
+
+    Axios.get(
+      `http://54.180.61.201:8080/space_for_nutrition_managers-0.0.1-SNAPSHOT/premium-user/${match.params.id}`
+    ).then((response) => {
+      setPremium(response.data);
+      console.log(response.data, "pre");
     });
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -312,10 +325,9 @@ const EvaluationCard = ({ match }) => {
     }
     if (name === "searchMemo") {
       setFindMemo(value);
-      console.log(findMemo)
+      console.log(findMemo);
     }
   };
-  
 
   function reload() {
     window.location.reload();
@@ -410,7 +422,7 @@ const EvaluationCard = ({ match }) => {
 
   let evalMonth = evalDay.getMonth() + 1;
   let evalDate = evalDay.getDate();
-
+  let evalYear = evalDay.getFullYear();
   const evalDays = `${evalMonth}월 ${evalDate}일`;
 
   const onKeyPress = (e) => {
@@ -426,12 +438,12 @@ const EvaluationCard = ({ match }) => {
   };
 
   let userWeightReverse = userWeight.reverse();
-  
+
   //검색 초기화 함수
   const resetFind = () => {
     setFindMemoArr([]);
-    setFindMemo('');
-  }
+    setFindMemo("");
+  };
 
   return (
     <>
@@ -461,6 +473,98 @@ const EvaluationCard = ({ match }) => {
 
       <EvaluationContainer>
         <Grid1>
+          
+          <InputSet>
+            <p
+              style={{
+                margin: "0",
+                marginBottom: "10px",
+                fontWeight: "700",
+              }}
+            >
+              💯 평가하기
+           
+            </p>
+            <div style={{display:'none'}}>
+            유저 아이디
+            <input
+              style={{
+                marginBottom: "10px",
+                padding: "7px",
+                border: "2px solid gray",
+                borderRadius: "5px",
+              }}
+              type="text"
+              name="userId"
+              value={match.params.id}
+              disabled
+            />
+            날짜
+            <input
+              style={{
+                marginBottom: "10px",
+                padding: "7px",
+                border: "2px solid gray",
+                borderRadius: "5px",
+              }}
+              type="text"
+              name="date2"
+              value={searchInput}
+              disabled
+            />
+            </div>
+            작성자
+            <input
+              style={{
+                marginBottom: "10px",
+                padding: "7px",
+                border: "2px solid gray",
+                borderRadius: "5px",
+              }}
+              type="text"
+              name="writer"
+              value={writer}
+              onChange={onChange}
+              placeholder="ID"
+            />
+            
+            
+            평가 점수
+            <input
+              style={{
+                marginBottom: "10px",
+                padding: "10px",
+                border: "2px solid gray",
+                borderRadius: "5px",
+                width: "90%",
+              }}
+              type="text"
+              name="evalGrade"
+              placeholder="점수를 입력해주세요. (0.0~5.0)"
+              value={evalGrade}
+              onChange={onChange}
+              maxLength="3"
+            />
+            평가
+            <textarea
+              style={{
+                width: "90%",
+                height: "150px",
+                padding: "10px",
+                border: "2px solid gray",
+                borderRadius: "5px",
+              }}
+              type="textarea"
+              placeholder="내용을 입력해주세요."
+              name="evaluation"
+              value={evalLength}
+              onChange={onChange}
+            />
+            <p
+              style={{ fontSize: "12px", fontWeight: "500" }}
+            >{`${evalLength.length}/8000`}</p>
+            <SubmitButton onClick={SubmitEval}>제출</SubmitButton>
+          </InputSet>
           <UserInfoContainer>
             <p
               style={{
@@ -471,7 +575,8 @@ const EvaluationCard = ({ match }) => {
             >
               👤 유저 정보
             </p>
-            <p style={{ marginBottom: "10px", fontSize: "14px" }}>
+            <p style={{margin:'0', fontSize:'12px', color:'gray'}}>{userInfo.userId}</p>
+            <p style={{fontSize: "14px", margin:'0', marginBottom:'5px'}}>
               {userInfo
                 ? `${userInfo.userName} ${String(userInfo.userWeight).slice(
                     -3,
@@ -479,6 +584,8 @@ const EvaluationCard = ({ match }) => {
                   )}kg ${String(userInfo.userHeight).slice(-4, 3)}cm`
                 : ""}
             </p>
+            <p style={{fontSize: "14px", margin:'0', marginBottom:'15px'}}>{(evalYear - Number(String(userInfo.userBirthday).slice(0,4)) + 1)}세 {(userInfo.userGender === 1) ? '남성' : '여성'} </p>
+            
             <p
               style={{
                 fontWeight: "700",
@@ -521,125 +628,97 @@ const EvaluationCard = ({ match }) => {
                 }kcal`
                 : ""}
             </p>
-            <p
-              style={{
-                margin: "0",
-                marginTop: "15px",
-                fontSize: "16px",
-                fontWeight: "700",
-              }}
-            >
-              👊🏻 몸무게 히스토리
-            </p>
-            <div
-              style={{
-                fontSize: "13px",
-                color: "gray",
-                maxHeight: "50px",
-                overflow: "scroll",
-                marginTop: "5px",
-              }}
-            >
-              {userWeightReverse.map((weight) => {
-                return (
-                  <p className="weight">{`${String(weight.weightValue).slice(
-                    0,
-                    2
-                  )}.${String(weight.weightValue).slice(
-                    2,
-                    3
-                  )}kg / ${weight.weightCreateDt.slice(0, 10)}`}</p>
-                );
-              })}
+            <div style={{ display: "flex", justifyContent: "space-around", marginBottom:'15px' }}>
+              <div>
+                <p
+                  style={{
+                    margin: "0",
+                    marginTop: "15px",
+                    fontSize: "16px",
+                    fontWeight: "700",
+                  }}
+                >
+                  🏆 챌린지 정보
+                </p>
+                <div
+                  style={{
+                    margin: "0",
+                    marginTop: "10px",
+                    fontSize: "13px",
+                    fontWeight: "500",
+                  }}
+                >
+                  <p>
+                    <b>시작일:</b>{" "}
+                    {premium.puStartDt
+                      ? String(premium.puStartDt).slice(0, 11)
+                      : "정보가 없습니다 😰"}
+                  </p>
+                  <p>
+                    <b>종료일:</b>{" "}
+                    {premium.puStartDt
+                      ? String(premium.puEndDt).slice(0, 11)
+                      : "정보가 없습니다 😰"}
+                  </p>
+                </div>
+              </div>
+              <div>
+                <p
+                  style={{
+                    margin: "0",
+                    marginTop: "15px",
+                    fontSize: "16px",
+                    fontWeight: "700",
+                  }}
+                >
+                  👊🏻 몸무게 히스토리
+                </p>
+                {userWeightReverse[0] ? (
+                  <div
+                    style={{
+                      fontSize: "13px",
+                      color: "gray",
+                      maxHeight: "43px",
+                      overflow: "scroll",
+                      marginTop: "5px",
+                    }}
+                  >
+                    {userWeightReverse.map((weight) => {
+                      return (
+                        <p
+                          style={{ fontSize: "13px", fontWeight: "500" }}
+                          className="weight"
+                        >{`${String(weight.weightValue).slice(0, 2)}.${String(
+                          weight.weightValue
+                        ).slice(2, 3)}kg / ${weight.weightCreateDt.slice(
+                          0,
+                          10
+                        )}`}</p>
+                      );
+                    })}
+                  </div>
+                ) : (
+                  <p
+                    style={{
+                      fontSize: "14px",
+                      fontWeight: "500",
+                      color: "gray",
+                    }}
+                  >
+                    히스토리가 없습니다.
+                  </p>
+                )}
+              </div>
             </div>
+            ✉️ 유저의 메모
+            {premium.puMemo ? (
+              <div>
+                <p style={{ fontSize: "14px" ,color:'rgb(90,90,90)' }}>{premium.puMemo}</p>
+              </div>
+            ) : (
+              <p style={{ fontSize: "14px" ,color:'gray' }}>메모가 없습니다.</p>
+            )}
           </UserInfoContainer>
-          <InputSet>
-            <p
-              style={{
-                margin: "0",
-                marginBottom: "10px",
-                fontWeight: "700",
-              }}
-            >
-              👋🏻 평가하기
-            </p>
-            유저 아이디
-            <input
-              style={{
-                marginBottom: "10px",
-                padding: "7px",
-                border: "2px solid gray",
-                borderRadius: "5px",
-              }}
-              type="text"
-              name="userId"
-              value={match.params.id}
-              disabled
-            />
-            작성자
-            <input
-              style={{
-                marginBottom: "10px",
-                padding: "7px",
-                border: "2px solid gray",
-                borderRadius: "5px",
-              }}
-              type="text"
-              name="writer"
-              value={writer}
-              onChange={onChange}
-              placeholder="ID"
-              disabled
-            />
-            날짜
-            <input
-              style={{
-                marginBottom: "10px",
-                padding: "7px",
-                border: "2px solid gray",
-                borderRadius: "5px",
-              }}
-              type="text"
-              name="date2"
-              value={searchInput}
-              disabled
-            />
-            평가 점수
-            <input
-              style={{
-                marginBottom: "10px",
-                padding: "10px",
-                border: "2px solid gray",
-                borderRadius: "5px",
-                width: "90%",
-              }}
-              type="text"
-              name="evalGrade"
-              placeholder="점수를 입력해주세요. (0.0~5.0)"
-              value={evalGrade}
-              onChange={onChange}
-              maxLength="3"
-            />
-            평가
-            <textarea
-              style={{
-                width: "90%",
-                height: "150px",
-                padding: "10px",
-                border: "2px solid gray",
-                borderRadius: "5px",
-              }}
-              type="textarea"
-              placeholder="내용을 입력해주세요."
-              name="evaluation"
-              value={evalLength}
-              onChange={onChange}
-            />
-            <p
-              style={{ fontSize: "12px", fontWeight: "500" }}
-            >{`${evalLength.length}/8000`}</p>
-            <SubmitButton onClick={SubmitEval}>제출</SubmitButton>
-          </InputSet>
         </Grid1>
         <AllNutrition>
           <p
@@ -817,7 +896,7 @@ const EvaluationCard = ({ match }) => {
         </AllNutrition>
         <BeforeEval>
           <b>🍕 과거 히스토리</b>
-            
+
           <MemoSearchInput
             value={findMemo}
             onChange={onChange}
@@ -826,17 +905,25 @@ const EvaluationCard = ({ match }) => {
             placeholder="이 말을 했었나? 라고 생각하는 단어를 적고 Enter!"
             onKeyPress={onKeyPressHistory}
           />
-          {findMemoArr[0] ? <ResetButton onClick={resetFind}>검색 초기화</ResetButton> : ""}
+          {findMemoArr[0] ? (
+            <ResetButton onClick={resetFind}>검색 초기화</ResetButton>
+          ) : (
+            ""
+          )}
           {findMemoArr.map((feval) => {
             return (
               <BeforeEvalCard key={feval.meKey}>
-                <p style={{
+                <p
+                  style={{
                     color: "red",
                     fontSize: "12px",
                     fontWeight: "600",
                     margin: "0",
                     marginBottom: "5px",
-                  }}>🔍 검색된 평가</p>
+                  }}
+                >
+                  🔍 검색된 평가
+                </p>
                 <p
                   style={{
                     color: "#94CB94",
@@ -879,8 +966,6 @@ const EvaluationCard = ({ match }) => {
               </BeforeEvalCard>
             );
           })}
-
-
 
           {managerEval.map((beval) => {
             return (
