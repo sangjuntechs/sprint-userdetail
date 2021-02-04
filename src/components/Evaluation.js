@@ -128,7 +128,7 @@ const CalendarContainer = styled.div`
 `;
 
 const Evaluation = ({match}) => {
-  const [searchInput, setSearchInput] = useState("");
+  const [searchInput, setSearchInput] = useState(match.params.adminid);
   const [searchList, setSearchList] = useState([]);
   const [filterUser, setFilterUser] = useState(searchList);
   const [startDate, setStartDate] = useState(new Date());

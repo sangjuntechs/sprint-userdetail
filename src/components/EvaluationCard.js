@@ -1,3 +1,4 @@
+/* eslint-disable eqeqeq */
 import React, { useState, useEffect } from "react";
 import styled from "styled-components";
 import Logo from "../img/AppIconNoopac.png";
@@ -45,7 +46,7 @@ const CardContainer = styled.div`
   flex-direction: column;
   align-items: center;
   margin-top: 30px;
-  height: 550px;
+  height: 600px;
   overflow: scroll;
   width: 100%;
   cursor: all-scroll;
@@ -134,7 +135,7 @@ const BeforeEval = styled.div`
   flex-direction: column;
   min-width: 350px;
   padding: 30px;
-  height: 800px;
+  height: 820px;
   background-color: rgba(240, 240, 240, 0.8);
   border-radius: 10px;
   cursor: all-scroll;
@@ -428,12 +429,14 @@ const EvaluationCard = ({ match }) => {
   const onKeyPress = (e) => {
     if (e.key === "Enter") {
       filterCardFn();
+      console.log(premiumDiff(premium.puStartDt, new Date()),'datedate')
     }
   };
 
   const onKeyPressHistory = (e) => {
     if (e.key === "Enter") {
       findMemoWord();
+      console.log(premiumDiff(premium.puStartDt, new Date()))
     }
   };
 
@@ -443,7 +446,22 @@ const EvaluationCard = ({ match }) => {
   const resetFind = () => {
     setFindMemoArr([]);
     setFindMemo("");
+    
   };
+
+  //프리미엄 일차 표시 함수
+  const premiumDiff = (date1, date2) => {
+    let diffDate1 = date1 instanceof Date ? date1 : new Date(date1);
+    let diffDate2 = date2 instanceof Date ? date2 : new Date(date2);
+
+    diffDate1 = new Date(diffDate1.getFullYear(), diffDate1.getMonth() +1, diffDate1.getDate());
+    diffDate2 = new Date(diffDate2.getFullYear(), diffDate2.getMonth() +1, diffDate2.getDate());
+
+    let diff = Math.abs(diffDate2.getTime() - diffDate1.getTime());
+    diff = Math.ceil(diff / (1000 * 3600 * 24));
+
+    return diff
+  }
 
   return (
     <>
@@ -575,6 +593,7 @@ const EvaluationCard = ({ match }) => {
             >
               👤 유저 정보
             </p>
+            
             <p style={{margin:'0', fontSize:'12px', color:'gray'}}>{userInfo.userId}</p>
             <p style={{fontSize: "14px", margin:'0', marginBottom:'5px'}}>
               {userInfo
@@ -648,17 +667,21 @@ const EvaluationCard = ({ match }) => {
                     fontWeight: "500",
                   }}
                 >
-                  <p>
+                  <p style={{margin:'0'}}>
                     <b>시작일:</b>{" "}
                     {premium.puStartDt
                       ? String(premium.puStartDt).slice(0, 11)
                       : "정보가 없습니다 😰"}
                   </p>
-                  <p>
+                  <p style={{margin:'0'}}>
                     <b>종료일:</b>{" "}
                     {premium.puStartDt
                       ? String(premium.puEndDt).slice(0, 11)
                       : "정보가 없습니다 😰"}
+                  </p>
+                  <p style={{margin:'0', fontSize:'16px'}}>
+
+                      {`챌린지 ${evalMonth == Number(String(premium.puStartDt).slice(5,7)) ? premiumDiff(premium.puStartDt, new Date()) + 1 : premiumDiff(premium.puStartDt, new Date()) + 4}일 차 🔥`}
                   </p>
                 </div>
               </div>
@@ -678,7 +701,7 @@ const EvaluationCard = ({ match }) => {
                     style={{
                       fontSize: "13px",
                       color: "gray",
-                      maxHeight: "43px",
+                      maxHeight: "57px",
                       overflow: "scroll",
                       marginTop: "5px",
                     }}
