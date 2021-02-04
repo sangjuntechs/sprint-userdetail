@@ -266,6 +266,7 @@ const EvaluationCard = ({ match }) => {
   const [findMemo, setFindMemo] = useState("");
   const [findMemoArr, setFindMemoArr] = useState([]);
   const [premium, setPremium] = useState([]);
+  const [foodCardJoin, setFoodCardJoin] = useState([]);
 
   useEffect(() => {
     Axios.get(
@@ -283,6 +284,7 @@ const EvaluationCard = ({ match }) => {
       `http://54.180.61.201:8080/space_for_nutrition_managers-0.0.1-SNAPSHOT/card-food/${match.params.id}`
     ).then((response) => {
       setAcardFood(response.data);
+      console.log(response.data,'food')
     });
     Axios.get(
       `http://54.180.61.201:8080/space_for_nutrition_managers-0.0.1-SNAPSHOT/manager-evaluation/${match.params.id}`
@@ -300,6 +302,13 @@ const EvaluationCard = ({ match }) => {
     ).then((response) => {
       setPremium(response.data);
       console.log(response.data, "pre");
+    });
+
+    Axios.get(
+      `http://54.180.61.201:8080/space_for_nutrition_managers-0.0.1-SNAPSHOT/card-food/user-card/${match.params.id}`
+    ).then((response) => {
+      setFoodCardJoin(response.data);
+      console.log(response.data,'foodcardjoin')
     });
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -363,15 +372,13 @@ const EvaluationCard = ({ match }) => {
       }
     });
     // eslint-disable-next-line
-    const filterFoods = aCardFood.filter((foods) => {
-      if (foods.cfWriteDt) {
-        return foods.cfWriteDt.toLowerCase().includes(searchInput);
-      }
-    });
+    const filterFoods = foodCardJoin.filter((fc) => {
+      return fc.cardShowDt.includes(searchInput)
+    })
+    
     setDayFoods(filterFoods);
     setFilterCards(filterCds);
     setDate(searchInput + " 00:00:00");
-    console.log(date);
     console.log(dayFoods);
   };
   //메뉴 지방 총 합

@@ -6,6 +6,7 @@ import Logo from "../img/AppIconNoopac.png";
 import { Link } from "react-router-dom";
 import Calendar from "react-calendar";
 import "../css/Calendar.css";
+import Loading from '../components/Loading'
 
 const Header = styled.div`
   box-sizing: border-box;
@@ -111,6 +112,7 @@ const MyUserContainer = styled.div`
   width: 100%;
   background-color: rgba(220, 220, 220, 0.5);
   border-radius: 10px;
+  min-height:700px;
 `;
 
 const EvalContainer = styled.div`
@@ -144,6 +146,7 @@ const Evaluation = ({match}) => {
       "http://54.180.61.201:8080/space_for_nutrition_managers-0.0.1-SNAPSHOT/premium-user"
     ).then((response) => {
       setSearchList(response.data);
+      console.log(response.data)
     });
 
     // userlist + evaluationcard
@@ -151,7 +154,7 @@ const Evaluation = ({match}) => {
       `http://54.180.61.201:8080/space_for_nutrition_managers-0.0.1-SNAPSHOT/premium-user/evaluation`
     ).then((response) => {
       setSearchEval(response.data);
-      console.log(response.data);
+      console.log(response.data, 'eval');
     });
     // eslint-disable-next-line react-hooks/exhaustive-deps
     Axios.get(
@@ -228,7 +231,7 @@ const Evaluation = ({match}) => {
 
   return (
     <>
-      {getAdmin ?(<><Header>
+      {getAdmin ? (<><Header>
         <Link to={`/${match.params.adminid}/evaluation`}>
           <Img src={Logo} alt="logo" />
         </Link>
@@ -260,9 +263,10 @@ const Evaluation = ({match}) => {
         </CalendarContainer>
         <MyUserContainer>
           <div style={{ margin: "20px", fontWeight: "600" }}>
-            {` 🌍 모든 유저`}
+             🌍 모든 유저
           </div>
-          <div style={{ height: "600px", overflow: "scroll" }}>
+
+          {searchList[1] ? (<><div style={{ height: "600px", overflow: "scroll" }}>
             {filterAdminId.map((user) => {
               return (
                 <CardBox key={user.userId + user.meCreateDt}>
@@ -281,13 +285,15 @@ const Evaluation = ({match}) => {
                 </CardBox>
               );
             })}
-          </div>
+          </div></>) : <Loading />}
+          
+          
         </MyUserContainer>
         <MyUserContainer>
           <div style={{ margin: "20px", fontWeight: "600" }}>
             {`🌲 ${showingDate} 피드백된 유저`}
           </div>
-          <div style={{ height: "600px", overflow: "scroll" }}>
+          {searchEval[0] ? (<><div style={{ height: "600px", overflow: "scroll" }}>
             {filterUser.map((user) => {
               return (
                 <CardBox key={user.userId + user.meCreateDt}>
@@ -306,7 +312,8 @@ const Evaluation = ({match}) => {
                 </CardBox>
               );
             })}
-          </div>
+          </div></>) : <Loading />}
+          
         </MyUserContainer>
       </EvalContainer></>) : ""}
       
