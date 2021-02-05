@@ -1,0 +1,7 @@
+.pagination{
+    transform: translateY(98%);
+}
+
+.active {
+    transform: translateY(0);
+}
