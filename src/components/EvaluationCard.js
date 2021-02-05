@@ -91,11 +91,11 @@ const Button = styled.button`
 `;
 
 const InputContainer = styled.div`
-  box-sizing:border-box;
+  box-sizing: border-box;
   display: flex;
   justify-content: center;
   align-items: center;
-  height:100%;
+  height: 100%;
 `;
 
 const InputSet = styled.div`
@@ -109,7 +109,7 @@ const InputSet = styled.div`
   padding: 15px;
   border-radius: 10px;
   height: 100%;
-  margin-bottom:10px;
+  margin-bottom: 10px;
   @media (max-width: 375px) {
     width: 320px;
   }
@@ -122,7 +122,7 @@ const EvaluationContainer = styled.div`
   font-weight: 600;
   justify-content: space-around;
   border-bottom: 2px solid rgba(200, 200, 200);
-  height:100%;
+  height: 100%;
   @media (max-width: 500px) {
     flex-flow: wrap;
   }
@@ -149,6 +149,7 @@ const BeforeEvalCard = styled.div`
   padding: 15px;
   margin: 15px;
   max-width: 800px;
+  line-height: 18px;
   background-color: white;
 `;
 
@@ -188,15 +189,15 @@ const UserInfoContainer = styled.div`
   background-color: rgba(240, 240, 240, 0.8);
   padding: 15px;
   border-radius: 10px;
-  height:100%;
+  height: 100%;
 `;
 
 const Grid1 = styled.div`
-  box-sizing:border-box;
+  box-sizing: border-box;
   display: flex;
   flex-direction: column;
   width: 100%;
-  height:100%;
+  height: 100%;
 `;
 
 const AllNutrition = styled.div`
@@ -221,6 +222,7 @@ const CardMemo = styled.div`
   z-index: 10;
   width: 100%;
   max-width: 500px;
+  line-height: 18px;
   background-color: #e9f3f9;
 `;
 
@@ -238,7 +240,6 @@ const ResetButton = styled.button`
 `;
 
 const EvaluationCard = ({ match }) => {
-  
   //날짜 형식
   /*
   const getFormatDate = (date) => {
@@ -260,7 +261,7 @@ const EvaluationCard = ({ match }) => {
   };
   let now = new Date();
 
-  let initialDay = getInitialDate(now)
+  let initialDay = getInitialDate(now);
 
   const [userCards, setUserCards] = useState([]);
   const [searchInput, setSearchInput] = useState(initialDay);
@@ -296,7 +297,7 @@ const EvaluationCard = ({ match }) => {
       `http://54.180.61.201:8080/space_for_nutrition_managers-0.0.1-SNAPSHOT/card-food/${match.params.id}`
     ).then((response) => {
       setAcardFood(response.data);
-      console.log(response.data,'food')
+      console.log(response.data, "food");
     });
     Axios.get(
       `http://54.180.61.201:8080/space_for_nutrition_managers-0.0.1-SNAPSHOT/manager-evaluation/${match.params.id}`
@@ -312,15 +313,15 @@ const EvaluationCard = ({ match }) => {
     Axios.get(
       `http://54.180.61.201:8080/space_for_nutrition_managers-0.0.1-SNAPSHOT/premium-user/${match.params.id}`
     ).then((response) => {
-      setPremium(response.data)
-      console.log(response.data, 'premium')
+      console.log(response.data, "premium");
+      setPremium(response.data);
     });
 
     Axios.get(
       `http://54.180.61.201:8080/space_for_nutrition_managers-0.0.1-SNAPSHOT/card-food/user-card/${match.params.id}`
     ).then((response) => {
       setFoodCardJoin(response.data);
-      console.log(response.data,'foodcardjoin')
+      console.log(response.data, "foodcardjoin");
     });
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -385,8 +386,8 @@ const EvaluationCard = ({ match }) => {
     });
     // eslint-disable-next-line
     const filterFoods = foodCardJoin.filter((fc) => {
-      return fc.cardShowDt.includes(searchInput)
-    })
+      return fc.cardShowDt.includes(searchInput);
+    });
 
     setDayFoods(filterFoods);
     setFilterCards(filterCds);
@@ -448,14 +449,14 @@ const EvaluationCard = ({ match }) => {
   const onKeyPress = (e) => {
     if (e.key === "Enter") {
       filterCardFn();
-      console.log(premiumDiff(premium.puStartDt, new Date()),'datedate')
+      console.log(premiumDiff(premium.puStartDt, new Date()), "datedate");
     }
   };
 
   const onKeyPressHistory = (e) => {
     if (e.key === "Enter") {
       findMemoWord();
-      console.log(premiumDiff(premium.puStartDt, new Date()))
+      console.log(premiumDiff(premium.puStartDt, new Date()));
     }
   };
 
@@ -465,7 +466,6 @@ const EvaluationCard = ({ match }) => {
   const resetFind = () => {
     setFindMemoArr([]);
     setFindMemo("");
-    
   };
 
   //프리미엄 일차 표시 함수
@@ -473,14 +473,22 @@ const EvaluationCard = ({ match }) => {
     let diffDate1 = date1 instanceof Date ? date1 : new Date(date1);
     let diffDate2 = date2 instanceof Date ? date2 : new Date(date2);
 
-    diffDate1 = new Date(diffDate1.getFullYear(), diffDate1.getMonth() +1, diffDate1.getDate());
-    diffDate2 = new Date(diffDate2.getFullYear(), diffDate2.getMonth() +1, diffDate2.getDate());
+    diffDate1 = new Date(
+      diffDate1.getFullYear(),
+      diffDate1.getMonth() + 1,
+      diffDate1.getDate()
+    );
+    diffDate2 = new Date(
+      diffDate2.getFullYear(),
+      diffDate2.getMonth() + 1,
+      diffDate2.getDate()
+    );
 
     let diff = Math.abs(diffDate2.getTime() - diffDate1.getTime());
     diff = Math.ceil(diff / (1000 * 3600 * 24));
 
-    return diff
-  }
+    return diff;
+  };
 
   return (
     <>
@@ -510,7 +518,6 @@ const EvaluationCard = ({ match }) => {
 
       <EvaluationContainer>
         <Grid1>
-          
           <InputSet>
             <p
               style={{
@@ -520,35 +527,34 @@ const EvaluationCard = ({ match }) => {
               }}
             >
               💯 평가하기
-           
             </p>
-            <div style={{display:'none'}}>
-            유저 아이디
-            <input
-              style={{
-                marginBottom: "10px",
-                padding: "7px",
-                border: "2px solid gray",
-                borderRadius: "5px",
-              }}
-              type="text"
-              name="userId"
-              value={match.params.id}
-              disabled
-            />
-            날짜
-            <input
-              style={{
-                marginBottom: "10px",
-                padding: "7px",
-                border: "2px solid gray",
-                borderRadius: "5px",
-              }}
-              type="text"
-              name="date2"
-              value={searchInput}
-              disabled
-            />
+            <div style={{ display: "none" }}>
+              유저 아이디
+              <input
+                style={{
+                  marginBottom: "10px",
+                  padding: "7px",
+                  border: "2px solid gray",
+                  borderRadius: "5px",
+                }}
+                type="text"
+                name="userId"
+                value={match.params.id}
+                disabled
+              />
+              날짜
+              <input
+                style={{
+                  marginBottom: "10px",
+                  padding: "7px",
+                  border: "2px solid gray",
+                  borderRadius: "5px",
+                }}
+                type="text"
+                name="date2"
+                value={searchInput}
+                disabled
+              />
             </div>
             작성자
             <input
@@ -564,8 +570,6 @@ const EvaluationCard = ({ match }) => {
               onChange={onChange}
               placeholder="ID"
             />
-            
-            
             평가 점수
             <input
               style={{
@@ -580,7 +584,6 @@ const EvaluationCard = ({ match }) => {
               placeholder="점수를 입력해주세요. (0.0~5.0)"
               value={evalGrade}
               onChange={onChange}
-              maxLength="3"
             />
             평가
             <textarea
@@ -612,9 +615,10 @@ const EvaluationCard = ({ match }) => {
             >
               👤 유저 정보
             </p>
-            
-            <p style={{margin:'0', fontSize:'12px', color:'gray'}}>{userInfo.userId}</p>
-            <p style={{fontSize: "14px", margin:'0', marginBottom:'5px'}}>
+            <p style={{ margin: "0", fontSize: "12px", color: "gray" }}>
+              {userInfo.userId}
+            </p>
+            <p style={{ fontSize: "14px", margin: "0", marginBottom: "5px" }}>
               {userInfo
                 ? `${userInfo.userName} ${String(userInfo.userWeight).slice(
                     -3,
@@ -622,8 +626,10 @@ const EvaluationCard = ({ match }) => {
                   )}kg ${String(userInfo.userHeight).slice(-4, 3)}cm`
                 : ""}
             </p>
-            <p style={{fontSize: "14px", margin:'0', marginBottom:'15px'}}>{(evalYear - Number(String(userInfo.userBirthday).slice(0,4)) + 1)}세 {(userInfo.userGender === 1) ? '남성' : '여성'} </p>
-            
+            <p style={{ fontSize: "14px", margin: "0", marginBottom: "15px" }}>
+              {evalYear - Number(String(userInfo.userBirthday).slice(0, 4)) + 1}
+              세 {userInfo.userGender === 1 ? "남성" : "여성"}{" "}
+            </p>
             <p
               style={{
                 fontWeight: "700",
@@ -646,9 +652,11 @@ const EvaluationCard = ({ match }) => {
                       ).toFixed(1) * 30
                     }kcal
                     
-                기초대사량: ${
-                  (parseInt(String(userInfo.userWeight).slice(-3, 2)) * 24 * 1).toFixed(1)
-                }kcal`
+                기초대사량: ${(
+                  parseInt(String(userInfo.userWeight).slice(-3, 2)) *
+                  24 *
+                  1
+                ).toFixed(1)}kcal`
                   : `표준몸무게: ${(
                       (parseInt(String(userInfo.userHeight).slice(-4, 3)) ** 2 /
                         10000) *
@@ -661,12 +669,20 @@ const EvaluationCard = ({ match }) => {
                         21
                       ).toFixed(1) * 30
                     }kcal
-                기초대사량: ${
-                  (parseInt(String(userInfo.userWeight).slice(-3, 2)) * 24 * 0.9).toFixed(1)
-                }kcal`
+                기초대사량: ${(
+                  parseInt(String(userInfo.userWeight).slice(-3, 2)) *
+                  24 *
+                  0.9
+                ).toFixed(1)}kcal`
                 : ""}
             </p>
-            <div style={{ display: "flex", justifyContent: "space-around", marginBottom:'15px' }}>
+            <div
+              style={{
+                display: "flex",
+                justifyContent: "space-around",
+                marginBottom: "15px",
+              }}
+            >
               <div>
                 <p
                   style={{
@@ -686,24 +702,28 @@ const EvaluationCard = ({ match }) => {
                     fontWeight: "500",
                   }}
                 >
-                  <p style={{margin:'0'}}>
-                    <b>시작일:</b>{" "}
-                    {premium[0].puStartDt
-                      ? String(premium[0].puStartDt).slice(0, 11)
+                  <p style={{ margin: "0" }}>
+                    <b>시작일:</b>
+                    {premium
+                      ? String(premium.puStartDt).slice(0, 11)
                       : "정보가 없습니다 😰"}
                   </p>
-                  <p style={{margin:'0'}}>
-                    <b>종료일:</b>{" "}
-                    {premium[0].puStartDt
-                      ? String(premium[0].puEndDt).slice(0, 11)
+                  <p style={{ margin: "0" }}>
+                    <b>종료일:</b>
+                    {premium
+                      ? String(premium.puEndDt).slice(0, 11)
                       : "정보가 없습니다 😰"}
                   </p>
-                  <p style={{margin:'0', fontSize:'16px'}}>
-
-                      {`챌린지 ${evalMonth == Number(String(premium[0].puStartDt).slice(5,7)) ? premiumDiff(premium[0].puStartDt, new Date()) + 1 : premiumDiff(premium[0].puStartDt, new Date()) + 4}일 차 🔥`}
+                  <p style={{ margin: "0", fontSize: "16px" }}>
+                    {`챌린지 ${
+                      evalMonth == Number(String(premium.puStartDt).slice(5, 7))
+                        ? premiumDiff(premium.puStartDt, new Date()) + 1
+                        : premiumDiff(premium.puStartDt, new Date()) + 4
+                    }일 차 🔥`}
                   </p>
                 </div>
               </div>
+
               <div>
                 <p
                   style={{
@@ -723,6 +743,7 @@ const EvaluationCard = ({ match }) => {
                       maxHeight: "57px",
                       overflow: "scroll",
                       marginTop: "5px",
+                      textAlign: "center",
                     }}
                   >
                     {userWeightReverse.map((weight) => {
@@ -755,10 +776,14 @@ const EvaluationCard = ({ match }) => {
             ✉️ 유저의 메모
             {premium.puMemo ? (
               <div>
-                <p style={{ fontSize: "14px" ,color:'rgb(90,90,90)' }}>{premium.puMemo}</p>
+                <p style={{ fontSize: "14px", color: "rgb(90,90,90)" }}>
+                  {premium.puMemo}
+                </p>
               </div>
             ) : (
-              <p style={{ fontSize: "14px" ,color:'gray' }}>메모가 없습니다.</p>
+              <p style={{ fontSize: "14px", color: "gray" }}>
+                메모가 없습니다.
+              </p>
             )}
           </UserInfoContainer>
         </Grid1>
@@ -818,7 +843,7 @@ const EvaluationCard = ({ match }) => {
                     <p
                       style={{
                         color: "#94CB94",
-                        fontSize: "15px",
+                        fontSize: "16px",
                         margin: "0",
                         marginBottom: "5px",
                         fontWeight: "700",
@@ -832,7 +857,7 @@ const EvaluationCard = ({ match }) => {
 
                     <p
                       style={{
-                        fontSize: "17px",
+                        fontSize: "16px",
                         margin: "0",
                         fontWeight: "500",
                       }}
@@ -842,14 +867,30 @@ const EvaluationCard = ({ match }) => {
 
                     <p style={{ margin: "0", fontSize: "12px", color: "gray" }}>
                       총 섭취량{" "}
-                      {aCardFood
-                        .filter((foods) => {
-                          return foods.cardKey === cards.cardKey;
-                        })
-                        .reduce((acc, curr) => {
-                          return acc + curr.cfGram;
-                        }, 0)}
-                      g
+                      <b>
+                        {aCardFood
+                          .filter((foods) => {
+                            return foods.cardKey === cards.cardKey;
+                          })
+                          .reduce((acc, curr) => {
+                            return acc + curr.cfGram;
+                          }, 0)}
+                        g
+                      </b>
+                    </p>
+
+                    <p style={{ margin: "0", fontSize: "12px", color: "gray" }}>
+                      이 카드의 열량{" "}
+                      <b>
+                        {aCardFood
+                          .filter((foods) => {
+                            return foods.cardKey === cards.cardKey;
+                          })
+                          .reduce((acc, curr) => {
+                            return acc + curr.cfCalorie;
+                          }, 0)}
+                        kcal
+                      </b>
                     </p>
 
                     {/* a_card_food내용 card에 가져오기 */}
@@ -885,16 +926,16 @@ const EvaluationCard = ({ match }) => {
               ) : (
                 <CardMemo key={cards.userId + cards.cardKey}>
                   <div>
+                    <p>메모 ✏️</p>
                     <p style={{ fontSize: "13px" }}>
                       {cards.cardCreateDt}에 생성
                     </p>
-
                     <p
                       style={{
-                        fontSize: "16px",
+                        fontSize: "14px",
                         marginTop: "10px",
                         marginBottom: "10px",
-                        fontWeight: "500",
+                        fontWeight: "400",
                       }}
                     >
                       {cards.cardMemo}
@@ -930,7 +971,10 @@ const EvaluationCard = ({ match }) => {
                         );
                       })}
                   </div>
-                  <CardImg src={cards.cardImage ? cards.cardImage : Logo} />
+                  <CardImg
+                    style={{ width: "150px", height: "150px", margin: "15px" }}
+                    src={cards.cardImage ? cards.cardImage : Logo}
+                  />
                 </CardMemo>
               );
             })}
