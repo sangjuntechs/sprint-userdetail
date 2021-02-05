@@ -135,7 +135,7 @@ const BeforeEval = styled.div`
   flex-direction: column;
   min-width: 350px;
   padding: 30px;
-  height: 820px;
+  height: 830px;
   background-color: rgba(240, 240, 240, 0.8);
   border-radius: 10px;
   cursor: all-scroll;
@@ -238,7 +238,9 @@ const ResetButton = styled.button`
 `;
 
 const EvaluationCard = ({ match }) => {
+  
   //날짜 형식
+  /*
   const getFormatDate = (date) => {
     let year = date.getFullYear();
     let month = 1 + date.getMonth();
@@ -247,11 +249,21 @@ const EvaluationCard = ({ match }) => {
     day = day >= 10 ? day : "0" + day;
     return year + "-" + month + "-" + day;
   };
+  */
+  const getInitialDate = (date) => {
+    let year = date.getFullYear();
+    let month = 1 + date.getMonth();
+    month = month >= 10 ? month : "0" + month;
+    let day = date.getDate() - 1;
+    day = day >= 10 ? day : "0" + day;
+    return year + "-" + month + "-" + day;
+  };
   let now = new Date();
 
-  let formatDay = getFormatDate(now);
+  let initialDay = getInitialDate(now)
+
   const [userCards, setUserCards] = useState([]);
-  const [searchInput, setSearchInput] = useState(formatDay);
+  const [searchInput, setSearchInput] = useState(initialDay);
   const [filterCards, setFilterCards] = useState([]);
   const [aCardFood, setAcardFood] = useState([]);
   const [managerEval, setManagerEval] = useState([]);
@@ -300,8 +312,8 @@ const EvaluationCard = ({ match }) => {
     Axios.get(
       `http://54.180.61.201:8080/space_for_nutrition_managers-0.0.1-SNAPSHOT/premium-user/${match.params.id}`
     ).then((response) => {
-      setPremium(response.data);
-      console.log(response.data, "pre");
+      setPremium(response.data)
+      console.log(response.data, 'premium')
     });
 
     Axios.get(
@@ -375,7 +387,7 @@ const EvaluationCard = ({ match }) => {
     const filterFoods = foodCardJoin.filter((fc) => {
       return fc.cardShowDt.includes(searchInput)
     })
-    
+
     setDayFoods(filterFoods);
     setFilterCards(filterCds);
     setDate(searchInput + " 00:00:00");
@@ -563,7 +575,7 @@ const EvaluationCard = ({ match }) => {
                 borderRadius: "5px",
                 width: "90%",
               }}
-              type="text"
+              type="number"
               name="evalGrade"
               placeholder="점수를 입력해주세요. (0.0~5.0)"
               value={evalGrade}
@@ -635,7 +647,7 @@ const EvaluationCard = ({ match }) => {
                     }kcal
                     
                 기초대사량: ${
-                  parseInt(String(userInfo.userWeight).slice(-3, 2)) * 24 * 1
+                  (parseInt(String(userInfo.userWeight).slice(-3, 2)) * 24 * 1).toFixed(1)
                 }kcal`
                   : `표준몸무게: ${(
                       (parseInt(String(userInfo.userHeight).slice(-4, 3)) ** 2 /
@@ -650,7 +662,7 @@ const EvaluationCard = ({ match }) => {
                       ).toFixed(1) * 30
                     }kcal
                 기초대사량: ${
-                  parseInt(String(userInfo.userWeight).slice(-3, 2)) * 24 * 0.9
+                  (parseInt(String(userInfo.userWeight).slice(-3, 2)) * 24 * 0.9).toFixed(1)
                 }kcal`
                 : ""}
             </p>
@@ -676,19 +688,19 @@ const EvaluationCard = ({ match }) => {
                 >
                   <p style={{margin:'0'}}>
                     <b>시작일:</b>{" "}
-                    {premium.puStartDt
-                      ? String(premium.puStartDt).slice(0, 11)
+                    {premium[0].puStartDt
+                      ? String(premium[0].puStartDt).slice(0, 11)
                       : "정보가 없습니다 😰"}
                   </p>
                   <p style={{margin:'0'}}>
                     <b>종료일:</b>{" "}
-                    {premium.puStartDt
-                      ? String(premium.puEndDt).slice(0, 11)
+                    {premium[0].puStartDt
+                      ? String(premium[0].puEndDt).slice(0, 11)
                       : "정보가 없습니다 😰"}
                   </p>
                   <p style={{margin:'0', fontSize:'16px'}}>
 
-                      {`챌린지 ${evalMonth == Number(String(premium.puStartDt).slice(5,7)) ? premiumDiff(premium.puStartDt, new Date()) + 1 : premiumDiff(premium.puStartDt, new Date()) + 4}일 차 🔥`}
+                      {`챌린지 ${evalMonth == Number(String(premium[0].puStartDt).slice(5,7)) ? premiumDiff(premium[0].puStartDt, new Date()) + 1 : premiumDiff(premium[0].puStartDt, new Date()) + 4}일 차 🔥`}
                   </p>
                 </div>
               </div>

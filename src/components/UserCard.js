@@ -234,9 +234,9 @@ const UserCard = () => {
                   <Link to={`user/${user.userId}`} key={user.userId}>
                     <CardContents>
                       {premiumUserId.includes(user.userId) ? <Puser /> : ""}
-                      <CardName>{user.userName}</CardName>
+                      <CardName>{user.userName ? user.userName : '이름없는 유저'}</CardName>
                       <UserImage
-                        src={user.userPhoto === "-" ? Logo : user.userPhoto}
+                        src={user.userPhoto === "" ? Logo : user.userPhoto}
                       />
                       <CardDetail>
                         <p id="1">USER ID : {user.userId}</p>

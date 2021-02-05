@@ -48,7 +48,7 @@ const PageBody = styled.div`
   position:fixed;
   bottom:5px;
   right:15px;
-  width:60%;
+  width:175%;
 `
 
 const Pagination = ({ postsPerPage, totalPosts, paginate }) => {

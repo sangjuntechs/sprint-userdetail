@@ -141,14 +141,6 @@ const Evaluation = ({match}) => {
   useEffect(() => {
     //프리미엄 유저 id가져오기
 
-    //유저 리스트 가져오기
-    Axios.get(
-      "http://54.180.61.201:8080/space_for_nutrition_managers-0.0.1-SNAPSHOT/premium-user"
-    ).then((response) => {
-      setSearchList(response.data);
-      console.log(response.data)
-    });
-
     // userlist + evaluationcard
     Axios.get(
       `http://54.180.61.201:8080/space_for_nutrition_managers-0.0.1-SNAPSHOT/premium-user/evaluation`
@@ -156,13 +148,21 @@ const Evaluation = ({match}) => {
       setSearchEval(response.data);
       console.log(response.data, 'eval');
     });
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+    
     Axios.get(
       `http://54.180.61.201:8080/space_for_nutrition_managers-0.0.1-SNAPSHOT/admin`
     ).then((response) => {
       setAdmin(response.data);
       console.log(response.data)
     });
+    //유저 리스트 가져오기
+    Axios.get(
+      "http://54.180.61.201:8080/space_for_nutrition_managers-0.0.1-SNAPSHOT/premium-user"
+    ).then((response) => {
+      setSearchList(response.data);
+      console.log(response.data)
+    });
+    
   }, []);
 
   const onChange = (event) => {
@@ -206,7 +206,7 @@ const Evaluation = ({match}) => {
     });
 
     setFilterAdminId(filterIds);
-
+    console.log(filterAdminId,'admin')
   };
 
   //엔터키 클릭
@@ -267,9 +267,11 @@ const Evaluation = ({match}) => {
           </div>
 
           {searchList[1] ? (<><div style={{ height: "600px", overflow: "scroll" }}>
+            
             {filterAdminId.map((user) => {
               return (
-                <CardBox key={user.userId + user.meCreateDt}>
+                <>
+                {user.puExpireYn === 'N' ? (<CardBox key={user.userId + user.meCreateDt}>
                   <Card>
                     <h2>{user.userName}</h2>
                     <p>
@@ -282,7 +284,9 @@ const Evaluation = ({match}) => {
                       <DcardButton>카드보기</DcardButton>
                     </Link>
                   </Card>
-                </CardBox>
+                </CardBox>) : ''}
+                
+                </>
               );
             })}
           </div></>) : <Loading />}
@@ -296,7 +300,8 @@ const Evaluation = ({match}) => {
           {searchEval[0] ? (<><div style={{ height: "600px", overflow: "scroll" }}>
             {filterUser.map((user) => {
               return (
-                <CardBox key={user.userId + user.meCreateDt}>
+                <>
+                {user.puExpireYn === 'N' ? ( <CardBox key={user.userId + user.meCreateDt}>
                   <Card>
                     <h2>{user.userName}</h2>
                     <p>
@@ -309,7 +314,9 @@ const Evaluation = ({match}) => {
                       <DcardButton>카드보기</DcardButton>
                     </Link>
                   </Card>
-                </CardBox>
+                </CardBox>) : ''}
+               
+                </>
               );
             })}
           </div></>) : <Loading />}
