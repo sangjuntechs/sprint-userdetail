@@ -46,7 +46,7 @@ const CardContainer = styled.div`
   flex-direction: column;
   align-items: center;
   margin-top: 30px;
-  height: 600px;
+  height: 560px;
   overflow: scroll;
   width: 100%;
   cursor: all-scroll;
@@ -96,6 +96,8 @@ const InputContainer = styled.div`
   justify-content: center;
   align-items: center;
   height: 100%;
+  margin-bottom:15px;
+  margin-top:15px;
 `;
 
 const InputSet = styled.div`
@@ -123,6 +125,7 @@ const EvaluationContainer = styled.div`
   justify-content: space-around;
   border-bottom: 2px solid rgba(200, 200, 200);
   height: 100%;
+  padding-top:0;
   @media (max-width: 500px) {
     flex-flow: wrap;
   }
@@ -396,47 +399,47 @@ const EvaluationCard = ({ match }) => {
   };
   //메뉴 지방 총 합
   let sumFoodsFat = dayFoods.reduce((acc, curr) => {
-    return acc + (curr.food100gGFat / 100) * curr.cfGram;
+    return acc + (curr.food100gGFat / 100) * (curr.cfGram * curr.cfRatio);
   }, 0);
 
   //메뉴 단백질 총 합
   let sumFoodsProt = dayFoods.reduce((acc, curr) => {
-    return acc + (curr.food100gGProtein / 100) * curr.cfGram;
+    return acc + (curr.food100gGProtein / 100) * (curr.cfGram * curr.cfRatio);
   }, 0);
 
   //메뉴 탄수화물 총 합
   let sumFoodsCarbo = dayFoods.reduce((acc, curr) => {
-    return acc + (curr.food100gGCarbohydrate / 100) * curr.cfGram;
+    return acc + (curr.food100gGCarbohydrate / 100) * (curr.cfGram * curr.cfRatio);
   }, 0);
 
   //메뉴 포화지방 총 합
   let sumSatFat = dayFoods.reduce((acc, curr) => {
-    return acc + (curr.food100gGSaturatedfat / 100) * curr.cfGram;
+    return acc + (curr.food100gGSaturatedfat / 100) * (curr.cfGram * curr.cfRatio);
   }, 0);
 
   //메뉴 당 총 합
   let sumSugar = dayFoods.reduce((acc, curr) => {
-    return acc + (curr.food100gGSugar / 100) * curr.cfGram;
+    return acc + (curr.food100gGSugar / 100) * (curr.cfGram * curr.cfRatio);
   }, 0);
 
   //메뉴 트랜스지방 총 합
   let sumTransFat = dayFoods.reduce((acc, curr) => {
-    return acc + (curr.food100gGTransfat / 100) * curr.cfGram;
+    return acc + (curr.food100gGTransfat / 100) * (curr.cfGram * curr.cfRatio);
   }, 0);
 
   //메뉴 콜레스테롤 총 합
   let sumCholesterol = dayFoods.reduce((acc, curr) => {
-    return acc + (curr.food100gMgCholesterol / 100) * curr.cfGram;
+    return acc + (curr.food100gMgCholesterol / 100) * (curr.cfGram * curr.cfRatio);
   }, 0);
 
   //메뉴 나트륨 총 합
   let sumSodium = dayFoods.reduce((acc, curr) => {
-    return acc + (curr.food100gMgSodium / 100) * curr.cfGram;
+    return acc + (curr.food100gMgSodium / 100) * (curr.cfGram * curr.cfRatio);
   }, 0);
 
   //메뉴 열량 총 합
   let sumCalorie = dayFoods.reduce((acc, curr) => {
-    return acc + (curr.food100gCalorie / 100) * curr.cfGram;
+    return acc + (curr.food100gCalorie / 100) * (curr.cfGram * curr.cfRatio);
   }, 0);
 
   let evalDay = new Date();
@@ -503,18 +506,7 @@ const EvaluationCard = ({ match }) => {
           </p>
         </div>
       </Header>
-      <InputContainer>
-        <Input
-          name="date"
-          value={searchInput}
-          onChange={onChange}
-          type="date"
-          id="date"
-          onKeyPress={onKeyPress}
-        />
-
-        <Button onClick={filterCardFn}>찾기</Button>
-      </InputContainer>
+      
 
       <EvaluationContainer>
         <Grid1>
@@ -796,6 +788,18 @@ const EvaluationCard = ({ match }) => {
             }}
           >
             🧐 전체 영양정보
+            <InputContainer>
+        <Input
+          name="date"
+          value={searchInput}
+          onChange={onChange}
+          type="date"
+          id="date"
+          onKeyPress={onKeyPress}
+        />
+
+        <Button onClick={filterCardFn}>찾기</Button>
+      </InputContainer>
           </p>
           {/*전체 영양정보 표시*/}
           <p
@@ -807,7 +811,7 @@ const EvaluationCard = ({ match }) => {
           >
             모든 음식 섭취량{" "}
             {dayFoods.reduce((acc, curr) => {
-              return acc + curr.cfGram;
+              return acc + (curr.cfGram * curr.cfRatio);
             }, 0)}
             g
           </p>
@@ -873,7 +877,7 @@ const EvaluationCard = ({ match }) => {
                             return foods.cardKey === cards.cardKey;
                           })
                           .reduce((acc, curr) => {
-                            return acc + curr.cfGram;
+                            return acc + (curr.cfGram * curr.cfRatio);
                           }, 0)}
                         g
                       </b>
@@ -887,7 +891,7 @@ const EvaluationCard = ({ match }) => {
                             return foods.cardKey === cards.cardKey;
                           })
                           .reduce((acc, curr) => {
-                            return acc + curr.cfCalorie;
+                            return acc + (curr.cfCalorie * curr.cfRatio);
                           }, 0)}
                         kcal
                       </b>
@@ -901,20 +905,21 @@ const EvaluationCard = ({ match }) => {
                       .map((food) => {
                         return (
                           <FoodDetail key={food.cfKey}>
+                            <p style={{color:'red', fontSize:'12px', margin:'0'}}>{food.cfRatio === 1 ? "" : `${food.cfRatio}배로 수정된 영양정보`}</p>
                             <p style={{ margin: "0", fontSize: "14px" }}>
-                              {`${food.cfFoodName}, ${food.cfCalorie}kcal, ${food.cfGram}g `}
+                              {`${food.cfFoodName}, ${(food.cfCalorie * food.cfRatio)}kcal, ${food.cfGram * food.cfRatio}g `}
                             </p>
                             <p style={{ fontSize: "12px", margin: "0" }}>
                               {/* 메뉴 별 g당 탄단지 */}
                               {` (${(
                                 (food.food100gGCarbohydrate / 100) *
-                                food.cfGram
+                                (food.cfGram  * food.cfRatio)
                               ).toFixed(1)}/ ${(
                                 (food.food100gGProtein / 100) *
-                                food.cfGram
+                                (food.cfGram * food.cfRatio)
                               ).toFixed(1)}/ ${(
                                 (food.food100gGFat / 100) *
-                                food.cfGram
+                                (food.cfGram * food.cfRatio)
                               ).toFixed(1)})`}
                             </p>
                           </FoodDetail>

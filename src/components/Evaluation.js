@@ -273,7 +273,7 @@ const Evaluation = ({match}) => {
                 <>
                 {user.puExpireYn === 'N' ? (<CardBox key={user.userId + user.meCreateDt}>
                   <Card>
-                    <h2>{user.userName}</h2>
+                    <h2>{user.userName ? user.userName : "이름이 없는 유저 😱"}</h2>
                     <p>
                       <b>유저 아이디:</b> {user.userId}
                     </p>
@@ -303,7 +303,7 @@ const Evaluation = ({match}) => {
                 <>
                 {user.puExpireYn === 'N' ? ( <CardBox key={user.userId + user.meCreateDt}>
                   <Card>
-                    <h2>{user.userName}</h2>
+                    <h2>{user.userName ? user.userName : "이름이 없는 유저 😱"}</h2>
                     <p>
                       <b>유저 아이디:</b> {user.userId}
                     </p>
