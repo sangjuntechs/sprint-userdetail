@@ -163,7 +163,7 @@ const Evaluation = ({match}) => {
       console.log(response.data)
     });
     
-  }, []);
+  },[]);
 
   const onChange = (event) => {
     const {
