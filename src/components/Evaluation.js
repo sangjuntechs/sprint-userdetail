@@ -161,6 +161,7 @@ const Evaluation = ({match}) => {
     ).then((response) => {
       setSearchList(response.data);
       console.log(response.data)
+
     });
     
   },[]);
@@ -189,9 +190,9 @@ const Evaluation = ({match}) => {
   //adminid 일치하는 경우 필터링
   const filterUserFn = () => {
     const filterUsers = searchEval.filter((users) => {
-      if (users.adminId) {
+      if (users.adminId || users.adminId === "") {
         return (
-          users.meShowDt.includes(formatDate) &&
+          users.meShowDt.toLowerCase().includes(formatDate) &&
           users.adminId.toLowerCase().includes(searchInput)
         );
       }
@@ -201,7 +202,7 @@ const Evaluation = ({match}) => {
 
     const filterIds = searchList.filter((users) => {
       if (users.adminId) {
-        return users.adminId.toLowerCase().includes(searchInput);
+        return users.adminId.toLowerCase().includes(searchInput) && users.puExpireYn === "N";
       }
     });
 
@@ -266,7 +267,7 @@ const Evaluation = ({match}) => {
              🌍 모든 유저
           </div>
 
-          {searchList[1] ? (<><div style={{ height: "600px", overflow: "scroll" }}>
+          {searchList[0] ? (<><div style={{ height: "600px", overflow: "scroll" }}>
             
             {filterAdminId.map((user) => {
               return (
@@ -301,7 +302,7 @@ const Evaluation = ({match}) => {
             {filterUser.map((user) => {
               return (
                 <>
-                {user.puExpireYn === 'N' ? ( <CardBox key={user.userId + user.meCreateDt}>
+                 <CardBox key={user.userId + user.meCreateDt}>
                   <Card>
                     <h2>{user.userName ? user.userName : "이름이 없는 유저 😱"}</h2>
                     <p>
@@ -314,7 +315,7 @@ const Evaluation = ({match}) => {
                       <DcardButton>카드보기</DcardButton>
                     </Link>
                   </Card>
-                </CardBox>) : ''}
+                </CardBox>
                
                 </>
               );

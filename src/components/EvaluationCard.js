@@ -905,9 +905,9 @@ const EvaluationCard = ({ match }) => {
                       .map((food) => {
                         return (
                           <FoodDetail key={food.cfKey}>
-                            <p style={{color:'red', fontSize:'12px', margin:'0'}}>{food.cfRatio === 1 ? "" : `${food.cfRatio}배로 수정된 영양정보`}</p>
+                            <p style={{color:'rgb(80,80,80)', fontSize:'12px', margin:'0'}}>{food.cfRatio === 1 ? "" : `${food.cfRatio.toFixed(1)}배로 수정된 영양정보`}</p>
                             <p style={{ margin: "0", fontSize: "14px" }}>
-                              {`${food.cfFoodName}, ${(food.cfCalorie * food.cfRatio)}kcal, ${food.cfGram * food.cfRatio}g `}
+                              {`${food.cfFoodName}, ${(food.cfCalorie * food.cfRatio).toFixed(1)}kcal, ${food.cfGram * food.cfRatio}g `}
                             </p>
                             <p style={{ fontSize: "12px", margin: "0" }}>
                               {/* 메뉴 별 g당 탄단지 */}
