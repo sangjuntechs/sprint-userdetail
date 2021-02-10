@@ -190,10 +190,10 @@ const Evaluation = ({match}) => {
   //adminid 일치하는 경우 필터링
   const filterUserFn = () => {
     const filterUsers = searchEval.filter((users) => {
-      if (users.adminId || users.adminId === "") {
+      if (users.adminId) {
         return (
           users.meShowDt.toLowerCase().includes(formatDate) &&
-          users.adminId.toLowerCase().includes(searchInput)
+          users.managerId.toLowerCase().includes(searchInput)
         );
       }
     });
@@ -309,7 +309,7 @@ const Evaluation = ({match}) => {
                       <b>유저 아이디:</b> {user.userId}
                     </p>
                     <p>
-                      <b>유저 관리자:</b> {user.adminId}
+                      <b>유저 관리자:</b> {user.managerId}
                     </p>
                     <Link to={`evaluations/${user.userId}`}>
                       <DcardButton>카드보기</DcardButton>
