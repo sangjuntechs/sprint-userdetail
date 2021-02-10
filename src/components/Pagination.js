@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useRef } from "react";
 import styled from "styled-components";
 import "../css/Pagination.css";
 
@@ -59,20 +59,20 @@ const Pagination = ({ postsPerPage, totalPosts, paginate }) => {
     pageNumbers.push(i);
   }
 
-  const activeIn = document.querySelector(".pagination");
+  const activeIn = useRef();
 
   function open() {
-    activeIn.classList.add("active");
+    activeIn.current.classList.add("active");
   }
 
   function close() {
-    activeIn.classList.remove("active");
+    activeIn.current.classList.remove("active");
   }
 
   return (
     <div>
       <nav>
-        <PageBody className="pagination">
+        <PageBody className="pagination" ref={activeIn}>
           <PageUl>
             <button
               style={{
@@ -83,15 +83,15 @@ const Pagination = ({ postsPerPage, totalPosts, paginate }) => {
                 top: "-45px",
                 fontWeight: "700",
                 padding: "10px",
+                cursor:'pointer',
+                zIndex:'10'
               }}
-              className="openBtn"
               onClick={open}
             >
               페이지리스트 열기
             </button>
             <button
               style={{ marginRight: "15px",marginLeft:'3px',fontWeight: "700" }}
-              className="openBtn"
               onClick={close}
             >
               숨기기

@@ -309,7 +309,7 @@ const Evaluation = ({match}) => {
                       <b>유저 아이디:</b> {user.userId}
                     </p>
                     <p>
-                      <b>유저 관리자:</b> {user.managerId}
+                      <b>작성자:</b> {user.managerId}
                     </p>
                     <Link to={`evaluations/${user.userId}`}>
                       <DcardButton>카드보기</DcardButton>
