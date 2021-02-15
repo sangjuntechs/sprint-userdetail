@@ -926,7 +926,12 @@ const EvaluationCard = ({ match }) => {
                         );
                       })}
                   </div>
+                  <div style={{display:'flex', flexDirection:'column'}}>
                   <CardImg src={cards.cardImage ? cards.cardImage : Logo} />
+                  {cards.cardImageEx1 ? <CardImg src={cards.cardImageEx1} /> : ''}
+                  {cards.cardImageEx2 ? <CardImg src={cards.cardImageEx2}/> : ''}
+                  {cards.cardImageEx3 ? <CardImg src={cards.cardImageEx3}/> : ''}
+                  </div>
                 </Card>
               ) : (
                 <CardMemo key={cards.userId + cards.cardKey}>
