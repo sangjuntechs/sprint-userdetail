@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import Axios from "axios";
+import Highlighter from 'react-highlight-words'
 
 const InputContainer = styled.div`
   display: flex;
@@ -34,6 +35,7 @@ const BodyContainer = styled.div`
 const EvalCard = styled.div`
   margin: 15px;
 `;
+
 
 const Education = () => {
   useEffect(() => {
@@ -103,8 +105,13 @@ const Education = () => {
         {searchMemo.map((evals) => {
           return (
             <EvalCard>
-              <p style={{ lineHeight: "20px", fontSize: "15px" }}>
-                {evals.meMemo}
+              <p style={{lineHeight:'20px'}}>
+              <Highlighter
+                highlightClassName="YourHighlightClass"
+                searchWords={[word]}
+                autoEscape={true}
+                textToHighlight ={evals.meMemo}
+              / >
               </p>
               <p style={{ fontSize: "13px", color: "gray" }}>
                 {evals.meCreateDt}

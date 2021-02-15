@@ -5,6 +5,7 @@ import Logo from "../img/AppIconNoopac.png";
 import { Link } from "react-router-dom";
 import Axios from "axios";
 import "../css/EvaluationCard.css";
+import Highlighter from 'react-highlight-words';
 
 const Header = styled.div`
   box-sizing: border-box;
@@ -1057,7 +1058,11 @@ const EvaluationCard = ({ match }) => {
                     marginTop: "15px",
                   }}
                 >
-                  {feval.meMemo}
+                  <Highlighter
+                    searchWords={[findMemo]}
+                    autoEscape={true}
+                    textToHighlight={feval.meMemo}
+                  />
                 </p>
               </BeforeEvalCard>
             );
