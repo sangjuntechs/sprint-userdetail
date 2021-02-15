@@ -156,11 +156,17 @@ const Search = () => {
   const [premiumUser, setPremiumUser] = useState([]);
   const [premiumUserId, setPremiumUserId] = useState([]);
 
+
   useEffect(() => {
-    Axios.get("http://54.180.61.201:8080/space_for_nutrition_managers-0.0.1-SNAPSHOT/").then((response) => {
+    Axios.get(
+      "http://54.180.61.201:8080/space_for_nutrition_managers-0.0.1-SNAPSHOT/"
+    ).then((response) => {
       setSearchList(response.data);
+      console.log(response.data, "user");
     });
-    Axios.get("http://54.180.61.201:8080/space_for_nutrition_managers-0.0.1-SNAPSHOT/premium-user").then((response) => {
+    Axios.get(
+      "http://54.180.61.201:8080/space_for_nutrition_managers-0.0.1-SNAPSHOT/premium-user"
+    ).then((response) => {
       setPremiumUser(response.data);
     });
   }, []);
@@ -171,13 +177,14 @@ const Search = () => {
     });
     setPremiumUserId(id);
   };
+
   //서치 벨류 상태관리
   const onChange = (event) => {
     const {
       target: { name, value },
     } = event;
     if (name === "user") {
-      setSearchInput(value);
+        setSearchInput(value);
     }
   };
 
@@ -186,11 +193,19 @@ const Search = () => {
     // eslint-disable-next-line array-callback-return
     const filterUsers = searchList.filter((users) => {
       if (users.userName) {
-        return users.userName.toLowerCase().includes(searchInput);
+        return (
+          users.userName.toLowerCase().includes(searchInput) ||
+          users.userId.includes(searchInput) ||
+          users.userBirthday.includes(searchInput) ||
+          String(users.userWeight).includes(searchInput) ||
+          String(users.userHeight).includes(searchInput) ||
+          (`${String(users.userHeight)}+${String(users.userWeight)}`).includes(searchInput)
+        );
       }
     });
     setFilterUser(filterUsers);
   };
+
   /*
   const deletePremium = (user_id) => {
     Axios.delete(`http://localhost:4000/user/delete/${user_id}`);
@@ -203,6 +218,12 @@ const Search = () => {
   };
   */
 
+  const onKeyPressHistory = (e) => {
+    if (e.key === "Enter") {
+      filterUserFn();
+    }
+  };
+
   return (
     <>
       <SearchBox>
@@ -211,6 +232,7 @@ const Search = () => {
           value={searchInput}
           onChange={onChange}
           placeholder="Search User"
+          onKeyPress={onKeyPressHistory}
         />
         <Button onClick={filterUserFn}>검색</Button>
         <Button2 onClick={getPremiumUser}>프리미엄 유저 찾기</Button2>
@@ -253,7 +275,6 @@ const Search = () => {
                 </EButton>
               </div>
               */}
-              
             </Card>
           );
         })}

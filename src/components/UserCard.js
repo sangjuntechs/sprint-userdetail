@@ -224,6 +224,10 @@ const UserCard = () => {
           <Link to={`evaluation`}>
           <EvalButton>평가하기</EvalButton>
           </Link>
+          <Link to='education'>
+          <EvalButton>Education</EvalButton>
+          </Link>
+          
           
           
          
