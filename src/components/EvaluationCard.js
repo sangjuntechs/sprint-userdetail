@@ -5,7 +5,7 @@ import Logo from "../img/AppIconNoopac.png";
 import { Link } from "react-router-dom";
 import Axios from "axios";
 import "../css/EvaluationCard.css";
-import Highlighter from 'react-highlight-words';
+import Highlighter from "react-highlight-words";
 
 const Header = styled.div`
   box-sizing: border-box;
@@ -97,8 +97,8 @@ const InputContainer = styled.div`
   justify-content: center;
   align-items: center;
   height: 100%;
-  margin-bottom:15px;
-  margin-top:15px;
+  margin-bottom: 15px;
+  margin-top: 15px;
 `;
 
 const InputSet = styled.div`
@@ -126,7 +126,7 @@ const EvaluationContainer = styled.div`
   justify-content: space-around;
   border-bottom: 2px solid rgba(200, 200, 200);
   height: 100%;
-  padding-top:0;
+  padding-top: 0;
   @media (max-width: 500px) {
     flex-flow: wrap;
   }
@@ -139,7 +139,7 @@ const BeforeEval = styled.div`
   flex-direction: column;
   min-width: 350px;
   padding: 30px;
-  height: 830px;
+  height: 870px;
   background-color: rgba(240, 240, 240, 0.8);
   border-radius: 10px;
   cursor: all-scroll;
@@ -284,6 +284,7 @@ const EvaluationCard = ({ match }) => {
   const [findMemoArr, setFindMemoArr] = useState([]);
   const [premium, setPremium] = useState([]);
   const [foodCardJoin, setFoodCardJoin] = useState([]);
+  const [allPremiumUser, setAllPremiumUser] = useState([]);
 
   useEffect(() => {
     Axios.get(
@@ -326,6 +327,12 @@ const EvaluationCard = ({ match }) => {
     ).then((response) => {
       setFoodCardJoin(response.data);
       console.log(response.data, "foodcardjoin");
+    });
+    Axios.get(
+      `http://54.180.61.201:8080/space_for_nutrition_managers-0.0.1-SNAPSHOT/premium-user`
+    ).then((response) => {
+      setAllPremiumUser(response.data);
+      console.log(response.data, "allpre");
     });
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -410,12 +417,16 @@ const EvaluationCard = ({ match }) => {
 
   //메뉴 탄수화물 총 합
   let sumFoodsCarbo = dayFoods.reduce((acc, curr) => {
-    return acc + (curr.food100gGCarbohydrate / 100) * (curr.cfGram * curr.cfRatio);
+    return (
+      acc + (curr.food100gGCarbohydrate / 100) * (curr.cfGram * curr.cfRatio)
+    );
   }, 0);
 
   //메뉴 포화지방 총 합
   let sumSatFat = dayFoods.reduce((acc, curr) => {
-    return acc + (curr.food100gGSaturatedfat / 100) * (curr.cfGram * curr.cfRatio);
+    return (
+      acc + (curr.food100gGSaturatedfat / 100) * (curr.cfGram * curr.cfRatio)
+    );
   }, 0);
 
   //메뉴 당 총 합
@@ -430,7 +441,9 @@ const EvaluationCard = ({ match }) => {
 
   //메뉴 콜레스테롤 총 합
   let sumCholesterol = dayFoods.reduce((acc, curr) => {
-    return acc + (curr.food100gMgCholesterol / 100) * (curr.cfGram * curr.cfRatio);
+    return (
+      acc + (curr.food100gMgCholesterol / 100) * (curr.cfGram * curr.cfRatio)
+    );
   }, 0);
 
   //메뉴 나트륨 총 합
@@ -453,14 +466,13 @@ const EvaluationCard = ({ match }) => {
   const onKeyPress = (e) => {
     if (e.key === "Enter") {
       filterCardFn();
-      console.log(premiumDiff(premium.puStartDt, new Date()), "datedate");
+      console.log(match.params.adminid);
     }
   };
 
   const onKeyPressHistory = (e) => {
     if (e.key === "Enter") {
       findMemoWord();
-      console.log(premiumDiff(premium.puStartDt, new Date()));
     }
   };
 
@@ -507,7 +519,6 @@ const EvaluationCard = ({ match }) => {
           </p>
         </div>
       </Header>
-      
 
       <EvaluationContainer>
         <Grid1>
@@ -608,6 +619,33 @@ const EvaluationCard = ({ match }) => {
             >
               👤 유저 정보
             </p>
+            <div style={{ marginBottom: "10px" }}>
+              <p style={{ margin: "0", fontSize: "12px", fontWeight: "500" }}>
+                {match.params.adminid}님의 담당유저
+              </p>
+              {allPremiumUser ? allPremiumUser
+                .filter((users) => {
+                  return users.adminId === match.params.adminid;
+                })
+                .map((user) => {
+                  return (
+                    <Link
+                      to={`/${match.params.adminid}/evaluations/${user.userId}`}
+                    >
+                      <button
+                        style={{
+                          marginRight: "4px",
+                          cursor: "pointer",
+              
+                        }}
+                        onClick={() => setTimeout(reload, 100)}
+                      >
+                        {user.userName}
+                      </button>
+                    </Link>
+                  );
+                }) : 'waiting..'}
+            </div>
             <p style={{ margin: "0", fontSize: "12px", color: "gray" }}>
               {userInfo.userId}
             </p>
@@ -790,17 +828,17 @@ const EvaluationCard = ({ match }) => {
           >
             🧐 전체 영양정보
             <InputContainer>
-        <Input
-          name="date"
-          value={searchInput}
-          onChange={onChange}
-          type="date"
-          id="date"
-          onKeyPress={onKeyPress}
-        />
+              <Input
+                name="date"
+                value={searchInput}
+                onChange={onChange}
+                type="date"
+                id="date"
+                onKeyPress={onKeyPress}
+              />
 
-        <Button onClick={filterCardFn}>찾기</Button>
-      </InputContainer>
+              <Button onClick={filterCardFn}>찾기</Button>
+            </InputContainer>
           </p>
           {/*전체 영양정보 표시*/}
           <p
@@ -812,7 +850,7 @@ const EvaluationCard = ({ match }) => {
           >
             모든 음식 섭취량{" "}
             {dayFoods.reduce((acc, curr) => {
-              return acc + (curr.cfGram * curr.cfRatio);
+              return acc + curr.cfGram * curr.cfRatio;
             }, 0)}
             g
           </p>
@@ -878,7 +916,7 @@ const EvaluationCard = ({ match }) => {
                             return foods.cardKey === cards.cardKey;
                           })
                           .reduce((acc, curr) => {
-                            return acc + (curr.cfGram * curr.cfRatio);
+                            return acc + curr.cfGram * curr.cfRatio;
                           }, 0)}
                         g
                       </b>
@@ -892,7 +930,7 @@ const EvaluationCard = ({ match }) => {
                             return foods.cardKey === cards.cardKey;
                           })
                           .reduce((acc, curr) => {
-                            return acc + (curr.cfCalorie * curr.cfRatio);
+                            return acc + curr.cfCalorie * curr.cfRatio;
                           }, 0)}
                         kcal
                       </b>
@@ -906,15 +944,31 @@ const EvaluationCard = ({ match }) => {
                       .map((food) => {
                         return (
                           <FoodDetail key={food.cfKey}>
-                            <p style={{color:'rgb(80,80,80)', fontSize:'12px', margin:'0'}}>{food.cfRatio === 1 ? "" : `${food.cfRatio.toFixed(1)}배로 수정된 영양정보`}</p>
+                            <p
+                              style={{
+                                color: "rgb(80,80,80)",
+                                fontSize: "12px",
+                                margin: "0",
+                              }}
+                            >
+                              {food.cfRatio === 1
+                                ? ""
+                                : `${food.cfRatio.toFixed(
+                                    1
+                                  )}배로 수정된 영양정보`}
+                            </p>
                             <p style={{ margin: "0", fontSize: "14px" }}>
-                              {`${food.cfFoodName}, ${(food.cfCalorie * food.cfRatio).toFixed(1)}kcal, ${food.cfGram * food.cfRatio}g `}
+                              {`${food.cfFoodName}, ${(
+                                food.cfCalorie * food.cfRatio
+                              ).toFixed(1)}kcal, ${
+                                food.cfGram * food.cfRatio
+                              }g `}
                             </p>
                             <p style={{ fontSize: "12px", margin: "0" }}>
                               {/* 메뉴 별 g당 탄단지 */}
                               {` (${(
                                 (food.food100gGCarbohydrate / 100) *
-                                (food.cfGram  * food.cfRatio)
+                                (food.cfGram * food.cfRatio)
                               ).toFixed(1)}/ ${(
                                 (food.food100gGProtein / 100) *
                                 (food.cfGram * food.cfRatio)
@@ -927,11 +981,23 @@ const EvaluationCard = ({ match }) => {
                         );
                       })}
                   </div>
-                  <div style={{display:'flex', flexDirection:'column'}}>
-                  <CardImg src={cards.cardImage ? cards.cardImage : Logo} />
-                  {cards.cardImageEx1 ? <CardImg src={cards.cardImageEx1} /> : ''}
-                  {cards.cardImageEx2 ? <CardImg src={cards.cardImageEx2}/> : ''}
-                  {cards.cardImageEx3 ? <CardImg src={cards.cardImageEx3}/> : ''}
+                  <div style={{ display: "flex", flexDirection: "column" }}>
+                    <CardImg src={cards.cardImage ? cards.cardImage : Logo} />
+                    {cards.cardImageEx1 ? (
+                      <CardImg src={cards.cardImageEx1} />
+                    ) : (
+                      ""
+                    )}
+                    {cards.cardImageEx2 ? (
+                      <CardImg src={cards.cardImageEx2} />
+                    ) : (
+                      ""
+                    )}
+                    {cards.cardImageEx3 ? (
+                      <CardImg src={cards.cardImageEx3} />
+                    ) : (
+                      ""
+                    )}
                   </div>
                 </Card>
               ) : (
