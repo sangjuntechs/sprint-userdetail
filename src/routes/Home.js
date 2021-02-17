@@ -116,10 +116,10 @@ const Home = ({ match }) => {
                 <IoSearch size="30px" />
               </ModalHeader>
               <CloseBtn onClick={onClickSearchClose}>❌</CloseBtn>
-              <Search />
+              <Search adminid={match.params.adminid}/>
             </InModalContents>
           </Modal>
-          <UserCard />
+          <UserCard adminid={match.params.adminid}/>
         </>
       ) : (
         ''

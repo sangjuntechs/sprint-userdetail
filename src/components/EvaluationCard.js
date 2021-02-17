@@ -6,6 +6,7 @@ import { Link } from "react-router-dom";
 import Axios from "axios";
 import "../css/EvaluationCard.css";
 import Highlighter from "react-highlight-words";
+import Modal from "react-modal";
 
 const Header = styled.div`
   box-sizing: border-box;
@@ -35,7 +36,6 @@ const Card = styled.div`
   width: 30%;
   justify-content: space-around;
   align-items: center;
-  z-index: 10;
   width: 100%;
   max-width: 500px;
   background-color: white;
@@ -47,7 +47,7 @@ const CardContainer = styled.div`
   flex-direction: column;
   align-items: center;
   margin-top: 30px;
-  height: 560px;
+  height: 630px;
   overflow: scroll;
   width: 100%;
   cursor: all-scroll;
@@ -59,7 +59,6 @@ const CardImg = styled.img`
   margin-bottom: 15px;
   margin-left: 10px;
   border-radius: 8px;
-  z-index: 10;
 `;
 
 const Input = styled.input`
@@ -139,7 +138,7 @@ const BeforeEval = styled.div`
   flex-direction: column;
   min-width: 350px;
   padding: 30px;
-  height: 870px;
+  height: 915px;
   background-color: rgba(240, 240, 240, 0.8);
   border-radius: 10px;
   cursor: all-scroll;
@@ -223,7 +222,6 @@ const CardMemo = styled.div`
   width: 30%;
   justify-content: space-around;
   align-items: center;
-  z-index: 10;
   width: 100%;
   max-width: 500px;
   line-height: 18px;
@@ -285,12 +283,24 @@ const EvaluationCard = ({ match }) => {
   const [premium, setPremium] = useState([]);
   const [foodCardJoin, setFoodCardJoin] = useState([]);
   const [allPremiumUser, setAllPremiumUser] = useState([]);
+  const [viewSearch, setViewSearch] = useState(false);
+  const [message, setMessage] = useState([]);
+  const [receiver, setReceiver] = useState(match.params.id);
+  const [title, setTitle] = useState("");
+  const [messageContents, setMessageContents] = useState('');
+  const [type, setType] = useState(1);
 
   useEffect(() => {
     Axios.get(
       `http://54.180.61.201:8080/space_for_nutrition_managers-0.0.1-SNAPSHOT/user-card/${match.params.id}`
     ).then((response) => {
       setUserCards(response.data);
+    });
+    Axios.get(
+      `http://54.180.61.201:8080/space_for_nutrition_managers-0.0.1-SNAPSHOT/message/${match.params.id}`
+    ).then((response) => {
+      setMessage(response.data.reverse());
+      console.log(response.data, "message");
     });
     Axios.get(
       `http://54.180.61.201:8080/space_for_nutrition_managers-0.0.1-SNAPSHOT/${match.params.id}`
@@ -361,6 +371,19 @@ const EvaluationCard = ({ match }) => {
       setFindMemo(value);
       console.log(findMemo);
     }
+    if (name === "receiver") {
+      setReceiver(value)
+    }
+    if (name === "title") {
+      setTitle(value)
+    }
+    if (name === "messageContents") {
+      setMessageContents(value)
+    }
+    if (name === "messageType") {
+      setType(parseInt(value))
+      console.log(type)
+    }
   };
 
   function reload() {
@@ -387,6 +410,20 @@ const EvaluationCard = ({ match }) => {
     ).then(console.log("success"));
     setTimeout(reload, 500);
   };
+
+  const pushMessage = () => {
+    Axios.post(
+      "http://54.180.61.201:8080/space_for_nutrition_managers-0.0.1-SNAPSHOT/message/",
+      {
+        userIds: receiver,
+        messageContents: messageContents,
+        messageTitle: title,
+        messageType: type,
+      }
+    ).then(console.log("success"));
+    setTimeout(reload, 100);
+  };
+
 
   const filterCardFn = () => {
     // eslint-disable-next-line array-callback-return
@@ -482,6 +519,15 @@ const EvaluationCard = ({ match }) => {
   const resetFind = () => {
     setFindMemoArr([]);
     setFindMemo("");
+  };
+
+  //모달 함수
+  const openModal = () => {
+    setViewSearch(true);
+  };
+
+  const closeModal = () => {
+    setViewSearch(false);
   };
 
   //프리미엄 일차 표시 함수
@@ -623,28 +669,44 @@ const EvaluationCard = ({ match }) => {
               <p style={{ margin: "0", fontSize: "12px", fontWeight: "500" }}>
                 {match.params.adminid}님의 담당유저
               </p>
-              {allPremiumUser ? allPremiumUser
-                .filter((users) => {
-                  return users.adminId === match.params.adminid;
-                })
-                .map((user) => {
-                  return (
-                    <Link
-                      to={`/${match.params.adminid}/evaluations/${user.userId}`}
-                    >
-                      <button
-                        style={{
-                          marginRight: "4px",
-                          cursor: "pointer",
-              
-                        }}
-                        onClick={() => setTimeout(reload, 100)}
-                      >
-                        {user.userName}
-                      </button>
-                    </Link>
-                  );
-                }) : 'waiting..'}
+              {allPremiumUser
+                ? allPremiumUser
+                    .filter((users) => {
+                      return users.adminId === match.params.adminid;
+                    })
+                    .map((user) => {
+                      return (
+                        <Link
+                          to={`/${match.params.adminid}/evaluations/${user.userId}`}
+                        >
+                          <button
+                            style={{
+                              marginRight: "4px",
+                              cursor: "pointer",
+                              marginTop: "3px",
+                            }}
+                            onClick={() => setTimeout(reload, 10)}
+                          >
+                            {user.userId === match.params.id ? (
+                              <p
+                                style={{
+                                  all: "unset",
+                                  color: "dodgerblue",
+                                  fontWeight: "800",
+                                }}
+                              >
+                                {user.userName
+                                  ? user.userName
+                                  : "이름없는 유저"}
+                              </p>
+                            ) : (
+                              user.userName
+                            )}
+                          </button>
+                        </Link>
+                      );
+                    })
+                : "waiting.."}
             </div>
             <p style={{ margin: "0", fontSize: "12px", color: "gray" }}>
               {userInfo.userId}
@@ -816,6 +878,69 @@ const EvaluationCard = ({ match }) => {
                 메모가 없습니다.
               </p>
             )}
+            <button
+              style={{ marginTop: "10px", cursor: "pointer" }}
+              onClick={openModal}
+            >
+              {premium.userName
+                ? `${premium.userName}님에게 메세지`
+                : "스프린트 유저에게 메세지"}
+            </button>
+            <Modal isOpen={viewSearch} ariaHideApp={false}>
+              <button
+                style={{
+                  all: "unset",
+                  cursor: "pointer",
+                  position: "absolute",
+                  right: "30px",
+                }}
+                onClick={closeModal}
+              >
+                ❌
+              </button>
+              {premium.userName}님에게 메시지를 보냅니다.
+              <div style={{ display: "flex", justifyContent: "space-around" ,alignItems:'center', marginTop:'30px'}}>
+                <div
+                  style={{
+                    display: "flex",
+                    flexDirection: "column",
+                    width: "30%",
+                    marginTop: "15px",
+                  }}
+                >
+                  받는사람 <input onChange={onChange} name='receiver' value={premium.userId} disabled />
+                  제목
+                  <input onChange={onChange} name="title" type="text" />
+                  내용
+                  <textarea onChange={onChange} name="messageContents" type="textarea" style={{ height: "200px" }} />
+                  타입
+                  <select name='messageType' onChange={onChange}>
+                    <option value="1">공지</option>
+                    <option value="2">개인 메세지</option>
+                  </select>
+                  <button style={{marginTop:'10px', cursor:'pointer', width:'30%'}} onClick={pushMessage}>보내기</button>
+                </div>
+                <div
+                  style={{ height: "600px", width: "40%", overflow: "scroll" }}
+                >
+                  {message.map((mess) => {
+                    return (
+                      mess.messageType === 3 ?
+                      ''
+                    : <div style={{ marginTop: "20px" }}>
+                    <p style={{ margin:'0',fontSize: "12px", color: "gray" }}>
+                      {mess.messageCreateDt}
+                    </p>
+                    <p style={{margin:'0',fontWeight:'700', marginTop:'8px'}}>{mess.messageTitle}</p>
+                    <p style={{margin:'0', lineHeight: "20px", fontSize:'14px' }}>
+                      {mess.messageContents}
+                    </p>
+                  </div>);
+                  })}
+                </div>
+                
+              </div>
+            </Modal>
           </UserInfoContainer>
         </Grid1>
         <AllNutrition>

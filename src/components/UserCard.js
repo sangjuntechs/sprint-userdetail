@@ -247,6 +247,7 @@ const UserCard = () => {
                         <p id="2">Email : {user.userEmail}</p>
                       </CardDetail>
                     </CardContents>
+                    
                   </Link>
                   {/* 
                   <div>

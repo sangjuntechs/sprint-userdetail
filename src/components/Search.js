@@ -149,13 +149,12 @@ const EButton = styled.button`
 `;
 */
 
-const Search = () => {
+const Search = ({ adminid }) => {
   const [searchList, setSearchList] = useState([]);
   const [searchInput, setSearchInput] = useState("");
   const [filterUser, setFilterUser] = useState([]);
   const [premiumUser, setPremiumUser] = useState([]);
   const [premiumUserId, setPremiumUserId] = useState([]);
-
 
   useEffect(() => {
     Axios.get(
@@ -184,7 +183,7 @@ const Search = () => {
       target: { name, value },
     } = event;
     if (name === "user") {
-        setSearchInput(value);
+      setSearchInput(value);
     }
   };
 
@@ -199,7 +198,9 @@ const Search = () => {
           users.userBirthday.includes(searchInput) ||
           String(users.userWeight).includes(searchInput) ||
           String(users.userHeight).includes(searchInput) ||
-          (`${String(users.userHeight)}+${String(users.userWeight)}`).includes(searchInput)
+          `${String(users.userHeight)}+${String(users.userWeight)}`.includes(
+            searchInput
+          )
         );
       }
     });
@@ -256,6 +257,9 @@ const Search = () => {
                     <p id="4">Weight : {user.userWeight}</p>
                   </CardDetail>
                 </CardContents>
+                <Link to={`/${adminid}/evaluations/${user.userId}`}>
+                  <button style={{cursor:'pointer' ,margin:'15px'}}>카드보기</button>
+                </Link>
               </Link>
               {/*
                 <div>

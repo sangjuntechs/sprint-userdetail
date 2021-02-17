@@ -305,12 +305,16 @@ const Evaluation = ({match}) => {
                  <CardBox key={user.userId + user.meCreateDt}>
                   <Card>
                     <h2>{user.userName ? user.userName : "이름이 없는 유저 😱"}</h2>
+                    <p style={{fontSize:'12px', color:'gray', fontWeight:'600'}}>
+                      {user.meCreateDt} 작성
+                    </p>
                     <p>
                       <b>유저 아이디:</b> {user.userId}
                     </p>
                     <p>
                       <b>작성자:</b> {user.managerId}
                     </p>
+                    
                     <Link to={`evaluations/${user.userId}`}>
                       <DcardButton>카드보기</DcardButton>
                     </Link>
